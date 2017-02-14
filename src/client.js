@@ -15,7 +15,8 @@ const sign = (args) => {
 }
 
 const defaultOptions = {
-  v: '0.0.1'
+  v: '0.0.1',
+  endpoint: 'http://api.yunplus.io/api',
 }
 
 class YFClient {
@@ -44,9 +45,9 @@ class YFClient {
     }
     inputData.sign = sign(inputData)
     delete inputData.masterKey
-    
+
     return new Promise( (resolve, reject) => {
-      fetch('http://api.yunplus.io/api', {
+      fetch(YFClient._options.endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json; charset=UTF-8'
