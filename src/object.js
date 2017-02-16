@@ -124,8 +124,9 @@ class Batch {
   }
 
   insert(l){
+    const _now = _.now()
     l = _.map(l, (item)=>{
-      item.updateAt = item.createAt = _.now()
+      item.updateAt = item.createAt = _now
       return item
     })
 
