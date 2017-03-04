@@ -36,6 +36,7 @@ class Obj {
         id: id
       }).then((data) => {
         self._d = data
+        self.objectId = _d.id
         resolve(self)
       }).catch((err)=>{
         reject(err)
