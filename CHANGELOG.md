@@ -3,6 +3,7 @@
 Feature
 
 - Object.remove() Can Called Without `get()`
+- Object.getByCondition()
 
 FixBugs
 

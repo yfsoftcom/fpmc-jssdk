@@ -14,6 +14,16 @@ describe('Object', function(){
     });
   });
 
+  it('Object getByCondition', function(done){
+    var obj = new YF.Object('fpm_template');
+    obj.getByCondition("name='test'").then(function(o){
+      console.log(o.get())
+      done();
+    }).catch(function(err){
+      done(err);
+    });
+  })
+
 })
 
 describe('Batch', function(){

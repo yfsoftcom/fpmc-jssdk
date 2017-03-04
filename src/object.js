@@ -28,6 +28,22 @@ class Obj {
     return this._d
   }
 
+  getByCondition(c){
+    let self = this
+    return new Promise((resolve, reject) => {
+      self._client.send('common.first', {
+        table: this._t,
+        condition: c
+      }).then((data) => {
+        self._d = data
+        self.objectId = data.id
+        resolve(self)
+      }).catch((err)=>{
+        reject(err)
+      })
+    })
+  }
+
   getById(id){
     let self = this
     return new Promise((resolve, reject) => {
@@ -68,7 +84,8 @@ class Obj {
 
   }
 
-  remove(){
+  remove(id){
+    this.objectId = id
     if(this.objectId == undefined){
       throw new Error('save error no objectid')
     }
