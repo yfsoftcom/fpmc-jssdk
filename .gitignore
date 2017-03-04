@@ -18,3 +18,4 @@ node_modules
 cache/*.json
 public/dist/*
 
+lib/
