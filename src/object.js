@@ -85,7 +85,7 @@ class Obj {
   }
 
   remove(id){
-    this.objectId = id
+    this.objectId = id || this.objectId
     if(this.objectId == undefined){
       throw new Error('save error no objectid')
     }
