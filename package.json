@@ -1,11 +1,12 @@
 {
   "name": "yf-fpm-client-nodejs",
-  "version": "1.0.3",
+  "version": "1.0.6",
   "description": "An Nodejs Client SDK For FPM-Server",
   "main": "lib/index.js",
   "scripts": {
     "compile": "babel -d lib/ src/",
     "pretest": "npm run compile",
+    "prepublish": "npm run compile",
     "test": "./node_modules/mocha/bin/mocha test/*.test.js"
   },
   "repository": {
