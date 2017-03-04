@@ -65,16 +65,16 @@ class Obj {
       throw new Error('save error no objectid')
     }
     if(d){
-      this._d = d
+      this._d = _.assign(this._d, d)
     }
-    this._d.updateAt = _.now()
+    d.updateAt = this._d.updateAt = _.now()
     let self = this
 
     return new Promise((resolve, reject) => {
       self._client.send('common.update', {
         table: this._t,
         condition: ' id = ' + this.objectId,
-        row: this._d,
+        row: d,
       }).then((data) => {
         resolve(self)
       }).catch((err)=>{

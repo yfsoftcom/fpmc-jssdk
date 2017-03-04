@@ -4,6 +4,7 @@ Feature
 
 - Object.remove() Can Called Without `get()`
 - Object.getByCondition()
+- improve `Object.save() `
 
 FixBugs
 
