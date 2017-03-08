@@ -2,16 +2,15 @@ import _ from 'lodash'
 import fetch from 'node-fetch'
 import md5 from 'md5'
 
-const sign = (args) => {
-  let argStrArray = _.map(args, (val, key)=>{
-    if(_.isObject(val)){
-      val = JSON.stringify(val)
-    }
-    return key + '=' + encodeURIComponent(val)
-  })
-  const content = argStrArray.join('&')
-  const d = md5(content)
-  return d
+function sign(args){
+  return md5(
+      _.map(args, function(val, key){
+        if(_.isObject(val)){
+          val = JSON.stringify(val)
+        }
+        return key + '=' + encodeURIComponent(val)
+      }).join('&')
+    )
 }
 
 const defaultOptions = {
@@ -22,7 +21,6 @@ const defaultOptions = {
 class YFClient {
 
   constructor(){
-    console.log('new YFClient')
     if(_.isEmpty(YFClient._options)){
       throw new Error('YFClient has not inited')
     }
@@ -53,7 +51,8 @@ class YFClient {
           'Content-Type': 'application/json; charset=UTF-8'
         },
         body: JSON.stringify (inputData)
-      }).then((rsp) => {
+      })
+        .then((rsp) => {
           return rsp.json()
         })
         .then((json) => {
@@ -66,13 +65,10 @@ class YFClient {
         .catch((err) => {
           reject(err)
         })
-
     })
   }
-
   toString(){
     return 'ops ~ hi there '
   }
 }
-
 export default YFClient
