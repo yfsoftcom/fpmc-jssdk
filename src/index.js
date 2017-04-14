@@ -1,5 +1,6 @@
 import Func from './function'
 import Query from './query'
+import File from './file'
 import { Obj, Batch} from './object'
 import YFClient from './client'
 
@@ -12,5 +13,6 @@ export default {
   Query: Query,
   Object: Obj,
   Batch: Batch,
+  File: File
 
 }
