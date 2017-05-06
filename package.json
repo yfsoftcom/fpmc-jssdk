@@ -27,7 +27,6 @@
   "homepage": "https://github.com/yfsoftcom/yf-fpm-client-nodejs#readme",
   "dependencies": {
     "async": "^2.1.4",
-    "form-data": "^2.1.4",
     "lodash": "^4.17.4",
     "md5": "^2.2.1",
     "node-fetch": "^1.6.3"
@@ -38,7 +37,6 @@
     "babel-polyfill": "^6.22.0",
     "babel-preset-es2015-node6": "^0.4.0",
     "babel-preset-stage-3": "^6.22.0",
-    "form-data": "^2.1.4",
     "mocha": "^3.2.0",
     "should": "^11.2.0"
   }
