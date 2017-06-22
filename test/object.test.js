@@ -1,39 +1,21 @@
 var should = require("should");
 var YF = require("../lib/index.js").default;
-YF.init({mode:'STAGING',scope:'api',appkey:'123123',masterKey:'1b7e5703602b6fce1cae7364ac0f2244'});
+YF.init({ appkey: '123123', masterKey: '123123', 
+  fields: {
+    createAt: { column: 'created_at', type: 'timestamp', },
+    updateAt: { column: 'updated_at', type: 'timestamp', }
+  }});
 
-
-describe('Object', function(){
-  it('Object function', function(done){
-    var obj = new YF.Object('ss_jobs');
-    obj.getById(1).then(function(o){
-      console.log(o.get())
-      done();
-    }).catch(function(err){
-      done(err);
-    });
-  });
-
-  it('Object getByCondition', function(done){
-    var obj = new YF.Object('fpm_template');
-    obj.getByCondition("name='test'").then(function(o){
-      console.log(o.get())
-      done();
-    }).catch(function(err){
-      done(err);
-    });
-  })
-
-})
-
-describe('Batch', function(){
+describe('Create', function(){
   it('Batch function', function(done){
-    var batch = new YF.Batch('ss_company');
-    batch.insert([
-      {company: 'yunjia'},
-      {company: 'yunplus'},
-      {company: 'yun+'},
-    ]).then(function(o){
+    var obj = new YF.Object('app_versions');
+    obj.set({
+      app: 'node-client',
+      version: '0.1',
+      device: 'web',
+      download: 'www.npmjs.com',
+    })
+    obj.create().then(function(o){
       console.log(o)
       done();
     }).catch(function(err){
@@ -41,4 +23,43 @@ describe('Batch', function(){
     });
   });
 
-})
+});
+// describe('Object', function(){
+//   it('Object function', function(done){
+//     var obj = new YF.Object('ss_jobs');
+//     obj.getById(1).then(function(o){
+//       console.log(o.get())
+//       done();
+//     }).catch(function(err){
+//       done(err);
+//     });
+//   });
+
+//   it('Object getByCondition', function(done){
+//     var obj = new YF.Object('fpm_template');
+//     obj.getByCondition("name='test'").then(function(o){
+//       console.log(o.get())
+//       done();
+//     }).catch(function(err){
+//       done(err);
+//     });
+//   })
+
+// })
+
+// describe('Batch', function(){
+//   it('Batch function', function(done){
+//     var batch = new YF.Batch('ss_company');
+//     batch.insert([
+//       {company: 'yunjia'},
+//       {company: 'yunplus'},
+//       {company: 'yun+'},
+//     ]).then(function(o){
+//       console.log(o)
+//       done();
+//     }).catch(function(err){
+//       done(err);
+//     });
+//   });
+
+// })

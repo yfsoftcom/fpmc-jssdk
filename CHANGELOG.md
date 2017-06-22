@@ -3,6 +3,13 @@
 Known Issues:
 
 - Support `updateAt` & `createAt` defined
+```javascript
+YF.init({ appkey: '123123', masterKey: '123123', 
+  fields: {
+    createAt: { column: 'created_at', type: 'timestamp', },
+    updateAt: { column: 'updated_at', type: 'timestamp', }
+  }});
+```
 
 # 1.0.12 (2017-05-06)
 

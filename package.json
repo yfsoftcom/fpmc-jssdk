@@ -1,6 +1,6 @@
 {
   "name": "yf-fpm-client-nodejs",
-  "version": "1.0.11",
+  "version": "1.0.13",
   "description": "An Nodejs Client SDK For FPM-Server",
   "main": "lib/index.js",
   "scripts": {
@@ -29,6 +29,7 @@
     "async": "^2.1.4",
     "lodash": "^4.17.4",
     "md5": "^2.2.1",
+    "moment": "^2.18.1",
     "node-fetch": "^1.6.3"
   },
   "devDependencies": {

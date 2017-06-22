@@ -16,7 +16,11 @@ function sign(args){
 const defaultOptions = {
   v: '0.0.1',
   endpoint: 'http://api.yunplus.io/api',
-  upload: 'http://api.yunplus.io/upload'
+  upload: 'http://api.yunplus.io/upload',
+  fields: {
+    createAt: { column: 'createAt', type: 'bigint', },
+    updateAt: { column: 'updateAt', type: 'bigint', }
+  }
 }
 
 class YFClient {
