@@ -34,6 +34,22 @@ class YFClient {
   static init(options){
     YFClient._options = _.assign(defaultOptions, options)
     YFClient._options.upload = YFClient._options.endpoint.replace(/(\/api|\/api\/)$/, '/upload')
+    YFClient._options.ping = YFClient._options.endpoint.replace(/(\/api|\/api\/)$/, '/ping')
+  }
+
+  static ping(){
+    return new Promise( (resolve, reject) => {
+      fetch(YFClient._options.ping)
+        .then((rsp) => {
+          return rsp.json()
+        })
+        .then((json) => {
+          resolve(json)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    })
   }
 
   upload(data){

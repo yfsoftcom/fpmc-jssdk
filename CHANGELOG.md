@@ -1,3 +1,23 @@
+# 1.0.15 (2018-05-18)
+Add 
+- ping
+```javascript
+YF.ping()
+    .then(function(data){
+      console.log(data);
+      /* receive data:
+      { errno: 0,
+        message: 'System online',
+        starttime: 1526632288379,
+        data: {},
+        timestamp: 1526632288460 }
+      //*/
+    }).catch(function(err){
+      done(err);
+    });
+```
+
+
 # 1.0.13 (2017-06-20)
 
 Known Issues:
