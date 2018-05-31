@@ -1,17 +1,12 @@
 {
-  "name": "yf-fpm-client-nodejs",
-  "version": "1.0.15",
-  "description": "An Nodejs Client SDK For FPM-Server",
+  "name": "yf-fpm-client-js",
+  "version": "1.0.1",
+  "description": "An Js Client SDK For FPM-Server",
   "main": "lib/index.js",
   "scripts": {
     "compile": "./node_modules/.bin/babel -d lib/ src/",
-    "pretest": "npm run compile",
-    "prepublish": "npm run compile",
+    "prepublishOnly": "npm run compile",
     "test": "./node_modules/.bin/mocha test/*.test.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/yfsoftcom/yf-fpm-client-nodejs.git"
   },
   "keywords": [
     "fpm",
@@ -21,26 +16,16 @@
   ],
   "author": "Wangfan",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/yfsoftcom/yf-fpm-client-nodejs/issues"
-  },
-  "homepage": "https://github.com/yfsoftcom/yf-fpm-client-nodejs#readme",
   "dependencies": {
-    "async": "^2.1.4",
-    "lodash": "^4.17.4",
-    "md5": "^2.2.1",
-    "moment": "^2.18.1",
-    "node-fetch": "^1.6.3"
+    "axios": "^0.18.0",
+    "lodash": "^4.17.4"
   },
   "devDependencies": {
     "babel-cli": "^6.22.2",
     "babel-core": "^6.14.0",
     "babel-plugin-transform-runtime": "^6.0.0",
-    "babel-polyfill": "^6.13.0",
     "babel-preset-env": "^1.6.1",
-    "babel-register": "^6.14.0",
     "babel-runtime": "^6.0.0",
-    "mocha": "^3.2.0",
-    "should": "^11.2.0"
+    "mocha": "^3.2.0"
   }
 }

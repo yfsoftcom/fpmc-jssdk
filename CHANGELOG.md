@@ -1,3 +1,9 @@
+# 1.1.0 (2018-05-31)
+
+Change
+- replace `axios` of `node-fetch` 
+- replace `dayjs` of `moment`
+
 # 1.0.15 (2018-05-18)
 Add 
 - ping

@@ -1,7 +1,6 @@
-var should = require("should");
+var should = require("mocha").should;
 var YF = require("../lib/index.js").default;
-
-YF.init({appkey:'123123',masterKey:'1b7e5703602b6fce1cae7364ac0f2244', endpoint:'http://localhost:9999/api'});
+YF.init({ appkey: '123123', masterKey: '123123'});
 
 
 describe('Gallery', function(){

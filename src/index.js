@@ -1,18 +1,21 @@
 import Func from './function'
 import Query from './query'
-import File from './file'
-import { Obj, Batch} from './object'
+import { Obj, Batch } from './object'
 import YFClient from './client'
 
+const init = (options) => {
+  YFClient.init(options)
+}
+const ping = YFClient.ping
 export default {
-  init: function(options) {
-    YFClient.init(options)
-  },
-  ping: YFClient.ping,
+  init: init,
+  ping: ping,
   Func: Func,
   Query: Query,
   Object: Obj,
   Batch: Batch,
-  File: File
-
 }
+
+export { Obj as Object, Func, Batch, Query, ping, init }
+
+

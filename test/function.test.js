@@ -1,11 +1,11 @@
-var should = require("should");
+var should = require("mocha").should;
 var YF = require("../lib/index.js").default;
-YF.init({mode:'STAGING',scope:'api',appkey:'123123',masterKey:'1b7e5703602b6fce1cae7364ac0f2244'});
+YF.init({ appkey: '123123', masterKey: '123123'});
 
 
 describe('Function', function(){
   it('call function', function(done){
-    var func = new YF.Func('system.show');
+    var func = new YF.Func('test.foo');
     func.invoke({}).then(function(data){
       console.log(data);
       done();

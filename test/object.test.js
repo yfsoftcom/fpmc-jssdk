@@ -1,10 +1,7 @@
-var should = require("should");
+var should = require("mocha").should;
 var YF = require("../lib/index.js").default;
-YF.init({ appkey: '123123', masterKey: '123123', 
-  fields: {
-    createAt: { column: 'created_at', type: 'timestamp', },
-    updateAt: { column: 'updated_at', type: 'timestamp', }
-  }});
+YF.init({ appkey: '123123', masterKey: '123123'});
+
 
 describe('Create', function(){
   it('Batch function', function(done){

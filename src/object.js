@@ -1,6 +1,5 @@
 import _ from 'lodash'
 import YFClient from './client'
-import moment from 'moment'
 
 class Obj {
   constructor(t, d){
@@ -11,17 +10,10 @@ class Obj {
     this._t = t
     this._d = d || {}
     this.objectId = this._d.id || undefined
-    this.fields = YFClient._options.fields
   }
 
-  getNow(type){
-    switch(type){
-      case 'bigint':
-        return _.now()
-      case 'timestamp':
-        return moment().format('YYYY-MM-DD HH:mm:ss')
-    }
-   
+  getNow(){
+    return _.now()   
   }
 
   set(k, v){
@@ -79,8 +71,8 @@ class Obj {
     if(d){
       this._d = _.assign(this._d, d)
     }
-    const _now = this.getNow(this.fields.updateAt.type)
-    d[this.fields.updateAt.column] = this._d[this.fields.updateAt.column] = _now
+    const _now = _.now()
+    d.updateAt = this._d.updateAt = _now
     let self = this
 
     return new Promise((resolve, reject) => {
@@ -127,8 +119,8 @@ class Obj {
       this._d = d
     }
     //生成创建时间
-    const _now = this.getNow(this.fields.createAt.type)
-    this._d[this.fields.createAt.column] = this._d[this.fields.updateAt.column] = _now
+    const _now = _.now()
+    this._d.createAt = this._d.updateAt = _now
     let self = this
 
     return new Promise((resolve, reject) => {
@@ -157,10 +149,10 @@ class Batch {
   }
 
   insert(l){
-    const _now = this.getNow(this.fields.createAt.type)
+    const _now = _.now()
     let self = this
     l = _.map(l, (item)=>{
-      item[self.fields.createAt.column] = item[self.fields.updateAt.column] = _now
+      item.createAt = item.updateAt = _now
       return item
     })
     return new Promise((resolve, reject) => {
@@ -176,4 +168,4 @@ class Batch {
   }
 
 }
-export { Obj, Batch}
+export { Obj, Batch }
