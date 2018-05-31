@@ -1,3 +1,8 @@
+# 1.0.2 (2018-05-31)
+BugFix:
+- Cant Run In `Product` Mode
+  - should sort the parameter by name
+  
 # 1.1.0 (2018-05-31)
 
 Change

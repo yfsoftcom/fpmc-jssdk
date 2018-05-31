@@ -3,14 +3,16 @@ import axios from 'axios'
 import { md5 } from './kit'
 
 const sign = (args) =>{
-  return md5(
-      _.map(args, (val, key) => {
-        if(_.isObject(val)){
-          val = JSON.stringify(val)
-        }
-        return key + '=' + encodeURIComponent(val)
-      }).join('&')
-    )
+  let ks = _.keys(args)
+  ks = ks.sort()
+  const content = _.map(ks, k => {
+    let val = args[k]
+    if(_.isObject(val)){
+      val = JSON.stringify(val)
+    }
+    return k + '=' + encodeURIComponent(val)
+  }).join('&')
+  return md5(content)
 }
 
 const defaultOptions = {
@@ -60,7 +62,6 @@ class YFClient {
     }
     inputData.sign = sign(inputData)
     delete inputData.masterKey
-
     return new Promise( (resolve, reject) => {
       axios.post(YFClient._options.endpoint, inputData)
         .then((rsp) => {
