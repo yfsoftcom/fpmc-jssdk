@@ -1,0 +1,15 @@
+{
+  "files": [
+    "typescript/*.ts",
+    "typescript/*/*.ts",
+  ],
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "lib": [
+      "dom",
+      "es6"
+    ],
+    "target": "es5"
+  }
+}

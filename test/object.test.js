@@ -1,16 +1,13 @@
-var should = require("mocha").should;
-var YF = require("../lib/index.js").default;
-YF.init({ appkey: '123123', masterKey: '123123'});
+const { init, DBObject, Object: Obj, ping } = require("../lib/index.js");
+init({ appkey: '123123', masterKey: '123123', endpoint: 'http://localhost:9999/api', v: '0.0.1' });
 
+describe('DBObject', function(){
 
-describe('Create', function(){
-  it('Batch function', function(done){
-    var obj = new YF.Object('app_versions');
+  it('Create function', function(done){
+    const obj = new DBObject('test');
     obj.set({
-      app: 'node-client',
-      version: '0.1',
-      device: 'web',
-      download: 'www.npmjs.com',
+      name: 't1',
+      val: '0.1',
     })
     obj.create().then(function(o){
       console.log(o)
@@ -19,6 +16,22 @@ describe('Create', function(){
       done(err);
     });
   });
+
+  // it('Batch function', function(done){
+  //   var obj = new YF.Object('app_versions');
+  //   obj.set({
+  //     app: 'node-client',
+  //     version: '0.1',
+  //     device: 'web',
+  //     download: 'www.npmjs.com',
+  //   })
+  //   obj.create().then(function(o){
+  //     console.log(o)
+  //     done();
+  //   }).catch(function(err){
+  //     done(err);
+  //   });
+  // });
 
 });
 // describe('Object', function(){

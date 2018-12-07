@@ -12,10 +12,11 @@ logs
 results
 
 npm-debug.log
-node_modules
+node_modules/
 
 .idea/*
 cache/*.json
 public/dist/*
 
 lib/
+config.json
