@@ -5,12 +5,12 @@ class Constant{
 
   private static _setted: boolean = false;
 
-  static set options(options: Options){
+  static setOptions(options: Options){
     Constant._setted = true;
     Constant._options = options;
   }
 
-  static get options(): Options{
+  static getOptions(): Options{
     if(!Constant._setted){
       console.log('Warnning: you have not call `init(Options)` for the sdk! do you mean to use the default options?', Constant._options);
     }

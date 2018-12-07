@@ -9,12 +9,6 @@ class ObjectId {
     this._id = id;
   }
 
-  get id(){
-    if( 'void' == this._id )
-      return;
-    return this._id;
-  }
-
   static from( valueOfId: any){
     if( valueOfId === undefined ){
       return new ObjectId('void');
@@ -36,6 +30,12 @@ class ObjectId {
 
   stringValue(): string{
     return this._id;
+  }
+
+  toString(): string{
+    if( undefined == this._id )
+      return undefined;
+    return `${this._id}`;
   }
 }
 

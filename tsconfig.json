@@ -1,7 +1,10 @@
 {
   "files": [
     "typescript/*.ts",
-    "typescript/*/*.ts",
+    "typescript/*/*.ts"
+  ],
+  "exclude": [
+    "node_modules" //忽略文件
   ],
   "compilerOptions": {
     "module": "commonjs",
@@ -10,6 +13,6 @@
       "dom",
       "es6"
     ],
-    "target": "es5"
+    "target": "es3"
   }
 }

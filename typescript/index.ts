@@ -3,7 +3,10 @@ import { Options, ping } from './util/kit';
 import Constant from './Constant';
 
 function init(options: object): void{
-  Constant.options = Options.parse(options);
+  Constant.setOptions( Options.parse(options) );
 }
-
-export { init, ping, DBObject, DBObject as Object }
+const fpmc = { init, ping, DBObject };
+export default fpmc;
+export { init, ping, DBObject };
+export { fpmc };
+console.log(fpmc)

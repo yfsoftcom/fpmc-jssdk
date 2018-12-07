@@ -63,7 +63,7 @@ abstract class AbsEntity implements Entity{
       const input = (<any>Object).create({});
       input.row = this._data;
       input[this._fieldOfTable] = this.name;
-      const rsp = await send( this._functionOfCreate, input, Constant.options);
+      const rsp = await send( this._functionOfCreate, input, Constant.getOptions());
       const id = rsp.insertId || rsp.id;
       if(id == undefined)
         throw new Error('create Error: no inserted Id return ');
