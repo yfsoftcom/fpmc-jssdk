@@ -1,19 +1,15 @@
 import axios from 'axios';
-import { Md5 } from 'ts-md5/dist/md5';
+import {
+  Md5
+} from 'ts-md5/dist/md5';
 
-function sign(args: any): string {
-  // let keys = new Array();
-  let keys = (<any>Object).keys(args);
-  // for( let k in args){
-  //   if( k == 'sign' )
-  //     continue;
-  //   keys.push[k];
-  // }
-  delete keys.sign;
+function sign(args: { [index: string]: any }, masterKey: string): string {
+  args.masterKey = masterKey;
+  let keys = ( < any > Object).keys(args);
   keys = keys.sort();
-  const content = keys.map( (k:string) => {
+  const content = keys.map((k: string) => {
     let val = args[k];
-    if( typeof (val) == 'object' ){
+    if (typeof (val) == 'object') {
       val = JSON.stringify(val)
     }
     return k + '=' + encodeURIComponent(val);
@@ -21,68 +17,59 @@ function sign(args: any): string {
   return Md5.hashStr(content) as string;
 }
 
-async function ping(uri: string): Promise<object> {
-  try{
+async function ping(uri: string): Promise < object > {
+  try {
     const rsp = await axios.get(uri);
-    const { data } = rsp;
+    const {
+      data
+    } = rsp;
     return data;
-  }catch(e){
+  } catch (e) {
     throw e;
   }
 }
 
-async function send(action: string, args ?: object, options ?: Options): Promise<any> {
+async function send(method: string, 
+  args?: { [index: string]: any }, 
+  options?: { [index: string]: any }): Promise<{ [index: string]: any }> {
+
+    // seriralize the json data
   const strOfArgs = JSON.stringify(args);
-  const { endpoint, appkey, masterKey, v } = options;
-  const inputData = {
-    method: action,
-    appkey: appkey,
-    masterKey: masterKey,
-    v: v,
+
+  // get the options
+  const {
+    endpoint,
+    appkey,
+    masterKey,
+    v
+  } = options;
+
+  // define the payload
+  const payload: { [index: string]: any} = {
+    method,
+    appkey,
+    v,
     timestamp: new Date().getTime(),
     param: strOfArgs,
-    sign: '',
   };
-  inputData.sign = sign(inputData)
-  delete inputData.masterKey
-  try{
-    const rsp = await axios.post(endpoint, inputData);
-    const { data } = rsp;
-    if( data.errno === 0)
+  // make a sign
+  payload.sign = sign(payload, masterKey);
+  try {
+    // post the data
+    const rsp = await axios.post(endpoint, payload);
+    const {
+      data
+    } = rsp;
+    // return success data if the errno is 0
+    if (data.errno === 0)
       return data.data;
-    throw new Error( JSON.stringify(data) );
-  }catch(e){
+    throw new Error(JSON.stringify(data));
+  } catch (e) {
     throw e;
   }
 }
 
-class Options {
-  ping :string = 'http://api.yunplus.io/ping';
-  endpoint :string = 'http://api.yunplus.io/api';
-  appkey :string = '123123123';
-  masterKey :string = '123123123';
-  v :string = '0.0.1';
-
-
-  static parse(options: any):Options{
-    const _options = new Options();
-    
-    if(options.appkey)
-      _options.appkey = options.appkey;
-    
-    if(options.masterKey)
-      _options.masterKey = options.masterKey;
-
-    if(options.v)
-      _options.v = options.v;
-
-    if(options.endpoint)
-      _options.endpoint = options.endpoint;
-
-    if(options.ping)
-      _options.ping = options.ping;
-    return _options;
-  }
-}
-
-export { ping, send, Options };
+export {
+  ping,
+  send
+};

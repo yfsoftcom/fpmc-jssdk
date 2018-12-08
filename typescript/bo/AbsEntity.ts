@@ -3,7 +3,7 @@
  */
 import ObjectId from './ObjectId';
 import Condition from './Condition';
-import Entity from './Entity';
+import Entity, { DataResult } from './Entity';
 import { send } from '../util/kit';
 import Constant from '../Constant';
 
@@ -15,23 +15,27 @@ abstract class AbsEntity implements Entity{
   // the mongodb might be 'collection'
   protected _fieldOfTable: string = 'table';
 
-  protected _functionOfCreate: string = 'common.create';
+  protected _functionNames: {[index:string]: string};
 
-  protected _functionOfRemove: string = 'common.remove';
+  private _data :{[index:string]: any} = {};
 
-  protected _functionOfSave: string = 'common.update';
+  private _fields : string = '*';
 
-  protected _functionOfGet: string = 'common.get';
-
-  private _data: any = Object.create({});
-
-  constructor( name: string, data ?: any | {} ){
+  constructor( name: string, data ?: {[index:string]: any} ){
     this.name = name;
+
+    this._fieldOfTable = this.getTableField();
+    this._functionNames = this.getFunctionNames();
+    
     if( data != undefined ){
       this._data = data;
       this.objectId = ObjectId.from( data.id || data.objectId );
-    }    
+    }
   }
+
+  protected abstract getTableField(): string;
+
+  protected abstract getFunctionNames(): {[index:string]: string};
 
   set( kv: any, val ?: any ): Entity{
     if( typeof(kv) == 'object')
@@ -47,8 +51,13 @@ abstract class AbsEntity implements Entity{
     return this._data;
   }
 
+  fields(fields: string): Entity{
+    this._fields = fields;
+    return this;
+  }
+
   // create => entity with the objectId
-  async create( data ?: Object | {}): Promise<Entity>{
+  async create( data ?: {[index:string]: any} ): Promise<DataResult>{
     if(!ObjectId.isNull(this.objectId)){
       throw new Error('create error too many objectid')
     }
@@ -58,45 +67,112 @@ abstract class AbsEntity implements Entity{
       createAt: _now,
       updateAt: _now,
     });
-    const self = this;
     try {
-      const input = (<any>Object).create({});
-      input.row = this._data;
+      const input:{[index:string]: any} = {
+        row: this._data,
+      };
       input[this._fieldOfTable] = this.name;
-      const rsp = await send( this._functionOfCreate, input, Constant.getOptions());
-      const id = rsp.insertId || rsp.id;
+      const rsp = await send( this._functionNames.create, input, Constant.getOptions());
+      const id = rsp.insertId || rsp.id || rsp.ObjectId;
       if(id == undefined)
         throw new Error('create Error: no inserted Id return ');
-      self.set('id', id);
-      self.objectId = ObjectId.from( id );
-      return Promise.resolve(self);
+      this.set('id', id);
+      this.objectId = ObjectId.from( id );
+      return Promise.resolve(new DataResult(this.objectId, this._data));
     } catch (error) {
       throw error;
     }
   }
 
   // save => entity with the new values
-  save( data ?: Object): Promise<Entity>{
-    return;
+  async save( data ?: {[index:string]: any}): Promise<DataResult>{
+    if(ObjectId.isNull(this.objectId))
+      throw new Error('save error no objectid');
+
+    const row: {[index:string]: any} = data? data: this._data;
+
+    row.updateAt = row.updateAt = new Date().getTime();
+    // remove id
+    delete row.id;
+    try {
+      const input:{[index:string]: any} = {
+        row,
+        condition: { id: this.objectId.stringValue() }
+      };
+      input[this._fieldOfTable] = this.name;
+      // wait to update, and need not feedback data if no error
+      await send( this._functionNames.update, input, Constant.getOptions());
+      this._data = (<any>Object).assign(this._data, row);
+
+      return Promise.resolve(new DataResult(this.objectId, this._data));
+    } catch (error) {
+      throw error;
+    }
+    
   }
 
   // get by condition
-  getByCondition( condition: Condition ): Promise<Entity>{
-    return;
+  async getByCondition( condition: any ): Promise<DataResult>{
+    try {
+      const input:{[index:string]: any} = {
+        condition: Condition.from(condition).format(),
+        fields: this._fields,
+      };
+      input[this._fieldOfTable] = this.name;
+      const data = await send( this._functionNames.first, input, Constant.getOptions());
+      this.set(data);
+      const id = data.id || data.objectId || data.insertId;
+      this.objectId = ObjectId.from(id);
+      return Promise.resolve(new DataResult(this.objectId, this._data));
+    } catch (error) {
+      throw error;
+    }
   }
 
   // get by id
-  getById( objectId : ObjectId): Promise<Entity>{
-    return;
+  async getById( objectId : any): Promise<DataResult>{
+    this.objectId = ObjectId.from(objectId);
+    if(ObjectId.isNull(this.objectId))
+      throw new Error('getById error no objectid');
+    try {
+      const input:{[index:string]: any} = {
+        id: this.objectId.stringValue(),
+        fields: this._fields,
+      };
+      input[this._fieldOfTable] = this.name;
+      const data = await send( this._functionNames.get, input, Constant.getOptions());
+      this.set(data);
+      return Promise.resolve(new DataResult(this.objectId, this._data));
+    } catch (error) {
+      throw error;
+    }
   }
 
   // remove => return ture/false
-  remove( objectId ?: ObjectId ): Promise<boolean>{
-    return;
+  async remove( objectId ?: any ): Promise<boolean>{
+    this.objectId = ObjectId.from(objectId) || this.objectId;
+    if(ObjectId.isNull(this.objectId))
+      throw new Error('remove error no objectid');
+    try {
+      const input:{[index:string]: any} = {
+        id: this.objectId.stringValue(),
+      };
+      input[this._fieldOfTable] = this.name;
+      // wait to remove, and need not feedback data if no error
+      const rsp = await send( this._functionNames.remove, input, Constant.getOptions());
+      const { affectedRows, changedRows, n } = rsp;
+      if(affectedRows == 1 || changedRows == 1 || n == 1)
+        return Promise.resolve(true);
+      throw new Error('nothing changed');
+    } catch (error) {
+      throw error;
+    }
   }
 
   // toString(json/object)
   toString(formater ?: string | 'json'): string{
+    if(this._data)
+      return JSON.stringify(this._data);
     return;
   }
 }

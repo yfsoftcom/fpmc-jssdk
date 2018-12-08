@@ -3,6 +3,7 @@
  */
 import ObjectId from './ObjectId';
 import Condition from './Condition';
+import DataResult from './DataResult';
 
 interface Entity {
   // the entity name, it should be set when contstract
@@ -15,20 +16,22 @@ interface Entity {
 
   get( key?: string ): any;
 
+  fields(fields: string): Entity;
+
   // create => entity with the objectId
-  create( data ?: Object): Promise<Entity>;
+  create( data ?: {[index:string]: any}): Promise<DataResult>;
 
   // save => entity with the new values
-  save( data ?: Object): Promise<Entity>;
+  save( data ?: {[index:string]: any}): Promise<DataResult>;
 
   // get by condition
-  getByCondition( condition: Condition ): Promise<Entity>;
+  getByCondition( condition: any ): Promise<DataResult>;
 
   // get by id
-  getById( objectId : ObjectId): Promise<Entity>;
+  getById( objectId : any): Promise<DataResult>;
 
   // remove => return ture/false
-  remove( objectId ?: ObjectId ): Promise<boolean>;
+  remove( objectId ?: any ): Promise<boolean>;
 
   // toString(json/object)
   toString(formater ?: string | 'json'): string;
@@ -36,4 +39,4 @@ interface Entity {
 }
 
 export default Entity;
-export { Entity };
+export { Entity, DataResult };

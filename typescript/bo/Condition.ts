@@ -15,12 +15,22 @@ class Condition{
     this._type = type;
   }
 
-  static fromJson( condition: object ){
+  static from( condition: any ): Condition{
+    if( typeof(condition) == 'string' )
+      return new Condition(condition, 'string')
+    return new Condition(condition, 'json');
+  }
+
+  static fromJson( condition: {[index:string]: any} ): Condition{
     return new Condition(condition);
   }
 
-  static fromString( condition: object ){
+  static fromString( condition: string ): Condition{
     return new Condition(condition, 'string');
+  }
+
+  format(): any{
+    return this._condition;
   }
 
   toString(): string{
@@ -29,7 +39,7 @@ class Condition{
     throw Error('the condition type is json, should call the toJson() to get the condition');
   }
 
-  toJson(): object{
+  toJson(): {[index:string]: any}{
     if(this._type == 'json')
       return this._condition;
     throw Error('the condition type is string, should call the toString() to get the condition');
