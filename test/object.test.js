@@ -3,6 +3,23 @@ const { init, DBObject, Object: Obj, ping } = require("../lib/index.js");
 init({ appkey: '123123', masterKey: '123123', endpoint: 'http://localhost:9999/api', v: '0.0.1' });
 
 describe('DBObject', function(){
+  before('', function(done){
+    const obj = new DBObject('test');
+    obj.clear()
+      .then(data => {
+        done();
+      })
+      .catch(done)
+  })
+
+  after('', function(done){
+    const obj = new DBObject('test');
+    obj.clear()
+      .then(data => {
+        done();
+      })
+      .catch(done)
+  })
 
   it('Create function', function(done){
     const obj = new DBObject('test');
@@ -18,18 +35,18 @@ describe('DBObject', function(){
     });
   });
 
-  it('Update function', function(done){
+  it('Update function', async () =>{
     const obj = new DBObject('test', { id: 1 });
     obj.set({
       name: '-t1',
       val: '-0.1',
     })
-    obj.save().then(function(o){
-      console.log(o)
-      done();
-    }).catch(function(err){
-      done(err);
-    });
+    try{
+      let data = await obj.save();
+      console.log(data)
+    }catch(e){
+      console.log('its fine', e.errno, e.message)
+    }
   });
 
   it('Remove function', function(done){

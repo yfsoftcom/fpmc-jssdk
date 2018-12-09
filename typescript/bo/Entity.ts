@@ -35,6 +35,9 @@ interface Entity {
   // remove => return ture/false
   remove( objectId ?: any ): Promise<boolean>;
 
+  // remove rows by the condition;
+  clear( condition: any ): Promise<number>;
+
   // toString(json/object)
   toString(formater ?: string | 'json'): string;
 

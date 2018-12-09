@@ -2,6 +2,7 @@ import axios from 'axios';
 import {
   Md5
 } from 'ts-md5/dist/md5';
+import Exception from '../bo/Exception';
 
 function sign(args: { [index: string]: any }, masterKey: string): string {
   args.masterKey = masterKey;
@@ -63,9 +64,13 @@ async function send(method: string,
     // return success data if the errno is 0
     if (data.errno === 0)
       return data.data;
-    throw new Error(JSON.stringify(data));
+    throw new Exception(data);
   } catch (e) {
-    throw e;
+    // handled ex
+    if(e.errno)
+      throw e;
+    // axios error;
+    throw new Exception({ errno: -998, message: e.toString() });
   }
 }
 

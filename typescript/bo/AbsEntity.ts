@@ -6,6 +6,7 @@ import Condition from './Condition';
 import Entity, { DataResult } from './Entity';
 import { send } from '../util/kit';
 import Constant from '../Constant';
+import Exception from './Exception';
 
 abstract class AbsEntity implements Entity{
 
@@ -59,10 +60,10 @@ abstract class AbsEntity implements Entity{
   async batch( datas: Array<{[index:string]: any}>): Promise<number>{
     const _now = new Date().getTime();
     if( datas == undefined )
-      throw new Error('datas should not be undefined');
+      throw new Exception({ message: 'datas should not be undefined' });
     const len = datas.length;
     if( len < 1 )
-      throw new Error(' datas length should more than 0');
+      throw new Exception({ message: ' datas length should more than 0' });
     for( let d of datas ){
       d.createAt = d.updateAt = _now;
     }
@@ -75,7 +76,7 @@ abstract class AbsEntity implements Entity{
       const { affectedRows, changedRows, n } = rsp;
       const rowsNumber = ( affectedRows || changedRows || n );
       if( len != rowsNumber )
-        throw new Error(`Batch create error: the affectedRows ${ rowsNumber } not equal the datas.length ${ len }`);
+        throw new Exception({ message: `Batch create error: the affectedRows ${ rowsNumber } not equal the datas.length ${ len }`});
       return Promise.resolve(len);
     } catch (error) {
       throw error;
@@ -85,7 +86,7 @@ abstract class AbsEntity implements Entity{
   // create => entity with the objectId
   async create( data ?: {[index:string]: any} ): Promise<DataResult>{
     if(!ObjectId.isNull(this.objectId)){
-      throw new Error('create error too many objectid')
+      throw new Exception({ message: 'create error too many objectid' });
     }
 
     const _now = new Date().getTime();
@@ -101,7 +102,7 @@ abstract class AbsEntity implements Entity{
       const rsp = await send( this._functionNames.create, input, Constant.getOptions());
       const id = rsp.insertId || rsp.id || rsp.ObjectId;
       if(id == undefined)
-        throw new Error('create Error: no inserted Id return ');
+        throw new Exception({ message: 'create Error: no inserted Id return ' });
       this.set('id', id);
       this.objectId = ObjectId.from( id );
       return Promise.resolve(new DataResult(this.objectId, this._data));
@@ -113,7 +114,7 @@ abstract class AbsEntity implements Entity{
   // save => entity with the new values
   async save( data ?: {[index:string]: any}): Promise<DataResult>{
     if(ObjectId.isNull(this.objectId))
-      throw new Error('save error no objectid');
+      throw new Exception({ message: 'save error no objectid' });
 
     const row: {[index:string]: any} = data? data: this._data;
 
@@ -159,7 +160,7 @@ abstract class AbsEntity implements Entity{
   async getById( objectId : any): Promise<DataResult>{
     this.objectId = ObjectId.from(objectId);
     if(ObjectId.isNull(this.objectId))
-      throw new Error('getById error no objectid');
+      throw new Exception({ message: 'getById error no objectid' });
     try {
       const input:{[index:string]: any} = {
         id: this.objectId.stringValue(),
@@ -178,7 +179,7 @@ abstract class AbsEntity implements Entity{
   async remove( objectId ?: any ): Promise<boolean>{
     this.objectId = ObjectId.from(objectId) || this.objectId;
     if(ObjectId.isNull(this.objectId))
-      throw new Error('remove error no objectid');
+      throw new Exception({ message: 'remove error no objectid' });
     try {
       const input:{[index:string]: any} = {
         id: this.objectId.stringValue(),
@@ -189,7 +190,24 @@ abstract class AbsEntity implements Entity{
       const { affectedRows, changedRows, n } = rsp;
       if(affectedRows == 1 || changedRows == 1 || n == 1)
         return Promise.resolve(true);
-      throw new Error('nothing changed');
+      throw new Exception({ message: 'nothing changed' });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+    // remove rows by the condition;
+  async clear( condition: any ): Promise<number>{
+    try {
+      const input:{[index:string]: any} = {
+        condition: Condition.from(condition).format(),
+        fields: this._fields,
+      };
+      input[this._fieldOfTable] = this.name;
+      const rsp = await send( this._functionNames.clear, input, Constant.getOptions());
+      const { affectedRows, changedRows, n } = rsp;
+      const rowsNumber = ( affectedRows || changedRows || n );
+      return Promise.resolve(rowsNumber);
     } catch (error) {
       throw error;
     }

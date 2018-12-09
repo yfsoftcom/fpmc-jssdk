@@ -13,6 +13,7 @@ class DBObject extends AbsEntity {
       get: 'common.get',
       update: 'common.update',
       remove: 'common.remove',
+      clear: 'common.clear',
     }
   }
 }

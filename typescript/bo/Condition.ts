@@ -1,6 +1,7 @@
 /**
  * the condition 
  */
+import Exception from './Exception';
 
 class Condition{
 
@@ -11,7 +12,7 @@ class Condition{
   constructor(condition: any, type?: string | 'json'){
     this._condition = condition;
     if(type != 'json' && type != 'string')
-      throw Error('the condition type can be only json or string!');
+      throw new Exception({ message: 'the condition type can be only json or string!' });
     this._type = type;
   }
 
@@ -36,13 +37,13 @@ class Condition{
   toString(): string{
     if(this._type == 'string')
       return this._condition;
-    throw Error('the condition type is json, should call the toJson() to get the condition');
+    throw new Exception({ message: 'the condition type is json, should call the toJson() to get the condition' });
   }
 
   toJson(): {[index:string]: any}{
     if(this._type == 'json')
       return this._condition;
-    throw Error('the condition type is string, should call the toString() to get the condition');
+    throw new Exception({ message: 'the condition type is string, should call the toString() to get the condition' });
   }
 }
 
