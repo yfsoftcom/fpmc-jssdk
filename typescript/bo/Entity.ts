@@ -2,7 +2,6 @@
  * The interface of Object/Document which contains `Create(), Save(), Remove()` and so on.
  */
 import ObjectId from './ObjectId';
-import Condition from './Condition';
 import DataResult from './DataResult';
 
 interface Entity {
@@ -20,6 +19,9 @@ interface Entity {
 
   // create => entity with the objectId
   create( data ?: {[index:string]: any}): Promise<DataResult>;
+
+  // batch => the rows number of inserted successfully ;
+  batch( datas: Array<{[index:string]: any}>): Promise<number>;
 
   // save => entity with the new values
   save( data ?: {[index:string]: any}): Promise<DataResult>;

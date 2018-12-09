@@ -56,12 +56,38 @@ abstract class AbsEntity implements Entity{
     return this;
   }
 
+  async batch( datas: Array<{[index:string]: any}>): Promise<number>{
+    const _now = new Date().getTime();
+    if( datas == undefined )
+      throw new Error('datas should not be undefined');
+    const len = datas.length;
+    if( len < 1 )
+      throw new Error(' datas length should more than 0');
+    for( let d of datas ){
+      d.createAt = d.updateAt = _now;
+    }
+    try {
+      const input:{[index:string]: any} = {
+        row: datas,
+      };
+      input[this._fieldOfTable] = this.name;
+      const rsp = await send( this._functionNames.create, input, Constant.getOptions());
+      const { affectedRows, changedRows, n } = rsp;
+      const rowsNumber = ( affectedRows || changedRows || n );
+      if( len != rowsNumber )
+        throw new Error(`Batch create error: the affectedRows ${ rowsNumber } not equal the datas.length ${ len }`);
+      return Promise.resolve(len);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   // create => entity with the objectId
   async create( data ?: {[index:string]: any} ): Promise<DataResult>{
     if(!ObjectId.isNull(this.objectId)){
       throw new Error('create error too many objectid')
     }
-    
+
     const _now = new Date().getTime();
     this._data = (<any>Object).assign(this._data, data, {
       createAt: _now,
@@ -108,7 +134,7 @@ abstract class AbsEntity implements Entity{
     } catch (error) {
       throw error;
     }
-    
+
   }
 
   // get by condition
