@@ -1,12 +1,13 @@
 /**
  * the abscract entity implement entity
  */
-import ObjectId from './ObjectId';
-import Condition from './Condition';
-import Entity, { DataResult } from './Entity';
-import { send } from '../util/kit';
-import Constant from '../Constant';
-import Exception from './Exception';
+import Entity from '../Entity';
+import Condition from '../util/Condition';
+import DataResult from '../util/DataResult';
+import { send } from '../../util/kit';
+import Constant from '../../Constant';
+import Exception from '../util/Exception';
+import ObjectId from '../util/ObjectId';
 
 abstract class AbsEntity implements Entity{
 

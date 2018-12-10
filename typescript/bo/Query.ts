@@ -1,4 +1,4 @@
-import DataResult from './DataResult';
+import DataResult from './util/DataResult';
 
 interface Query{
 

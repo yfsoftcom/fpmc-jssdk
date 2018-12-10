@@ -1,7 +1,8 @@
 {
   "files": [
     "typescript/*.ts",
-    "typescript/*/*.ts"
+    "typescript/*/*.ts",
+    "typescript/*/*/*.ts"
   ],
   "exclude": [
     "node_modules" //忽略文件

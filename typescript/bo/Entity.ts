@@ -1,8 +1,8 @@
 /**
  * The interface of Object/Document which contains `Create(), Save(), Remove()` and so on.
  */
-import ObjectId from './ObjectId';
-import DataResult from './DataResult';
+import ObjectId from './util/ObjectId';
+import DataResult from './util/DataResult';
 
 interface Entity {
   // the entity name, it should be set when contstract

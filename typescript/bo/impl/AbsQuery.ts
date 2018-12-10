@@ -1,13 +1,12 @@
 /**
  * the absctract class for interface query
  */
-import Query from './Query';
-import DataResult from './DataResult';
-import { send } from '../util/kit';
-import Constant from '../Constant';
-import Exception from './Exception';
-import ObjectId from './ObjectId';
-import Condition from './Condition';
+import Query from '../Query';
+import DataResult from '../util/DataResult';
+import { send } from '../../util/kit';
+import Constant from '../../Constant';
+import Exception from '../util/Exception';
+import ObjectId from '../util/ObjectId';
 
 abstract class AbsQuery implements Query{
 
@@ -67,6 +66,21 @@ abstract class AbsQuery implements Query{
 
   select(fields: string): Query {
     this._fields = fields;
+    // select all fields
+    if(this._fields == '*')
+      return this;
+    // part of the fields;
+    const fieldsArr = fields.split(',')
+    if(fieldsArr.indexOf('updateAt') < 0){
+      fieldsArr.push('updateAt');
+    }
+    if(fieldsArr.indexOf('createAt') < 0){
+      fieldsArr.push('createAt');
+    }
+    if(fieldsArr.indexOf('id') < 0){
+      fieldsArr.push('id');
+    }
+    this._fields = fieldsArr.join(',');
     return this;
   }
 
@@ -76,7 +90,7 @@ abstract class AbsQuery implements Query{
         condition: this._condtion
       };
       input[this._fieldOfTable] = this.name;
-      const { count } = await send( this._functionNames.count, input, Constant.getOptions());
+      const count = await send( this._functionNames.count, input, Constant.getOptions());
       return Promise.resolve(count);
     } catch (error) {
       throw error;
@@ -96,12 +110,38 @@ abstract class AbsQuery implements Query{
       throw error;
     }
   }
-  find(): Promise<[]>{
-    return;
+  async find(): Promise<[]>{
+    try {
+      const input:{[index:string]: any} = {
+        condition: this._condtion,
+        fields: this._fields,
+        sort: this._sorter,
+        limit: this._limit,
+        skip: this._skip,
+      };
+      input[this._fieldOfTable] = this.name;
+      const rows = await send( this._functionNames.find, input, Constant.getOptions());
+      return Promise.resolve(rows);
+    } catch (error) {
+      throw error;
+    }
   }
 
-  findAndCount(): Promise<{ [index: string]: any; }> {
-    throw new Error("Method not implemented.");
+  async findAndCount(): Promise<{ [index: string]: any; }> {
+    try {
+      const input:{[index:string]: any} = {
+        condition: this._condtion,
+        fields: this._fields,
+        sort: this._sorter,
+        limit: this._limit,
+        skip: this._skip,
+      };
+      input[this._fieldOfTable] = this.name;
+      const data = await send( this._functionNames.findAndCount, input, Constant.getOptions());
+      return Promise.resolve(data);
+    } catch (error) {
+      throw error;
+    }
   }
 
 

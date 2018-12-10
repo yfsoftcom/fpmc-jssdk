@@ -1,4 +1,5 @@
 import AbsQuery from './AbsQuery';
+import { Query } from '../Query';
 
 class DBQuery extends AbsQuery{
 
@@ -15,10 +16,12 @@ class DBQuery extends AbsQuery{
       remove: 'common.remove',
       clear: 'common.clear',
       count: 'common.count',
+      find: 'common.find',
+      findAndCount: 'common.findAndCount',
     }
   }
 
-  or(condition: { [index: string]: any; }): import("/Users/yfsoft/Product/yf-fpm-client-nodejs/typescript/bo/Query").Query {
+  or(condition: { [index: string]: any; }): Query {
     throw new Error("Method not implemented.");
   }
 

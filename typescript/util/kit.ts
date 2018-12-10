@@ -2,7 +2,7 @@ import axios from 'axios';
 import {
   Md5
 } from 'ts-md5/dist/md5';
-import Exception from '../bo/Exception';
+import Exception from '../bo/util/Exception';
 
 function sign(args: { [index: string]: any }, masterKey: string): string {
   args.masterKey = masterKey;
@@ -32,7 +32,7 @@ async function ping(uri: string): Promise < object > {
 
 async function send(method: string, 
   args?: { [index: string]: any }, 
-  options?: { [index: string]: any }): Promise<{ [index: string]: any }> {
+  options?: { [index: string]: any }): Promise<any> {
 
     // seriralize the json data
   const strOfArgs = JSON.stringify(args);

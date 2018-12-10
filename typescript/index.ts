@@ -1,5 +1,5 @@
-import DBObject from './bo/DBObject';
-import DBQuery from './bo/DBQuery';
+import DBObject from './bo/impl/DBObject';
+import DBQuery from './bo/impl/DBQuery';
 import Func from './bo/Func';
 import { ping } from './util/kit';
 import Constant from './Constant';
