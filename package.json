@@ -23,7 +23,6 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.18.0",
-    "lodash": "^4.17.4",
     "ts-md5": "^1.2.4"
   },
   "devDependencies": {
