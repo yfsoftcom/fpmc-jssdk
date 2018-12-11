@@ -9,11 +9,10 @@ const isBrowser = (typeof document !== "undefined" && typeof window !== 'undefin
 function init(options: {[index:string]: any}): void{
   Constant.setOptions( options );
 }
-const fpmc :{[index:string]: any} = { init, ping, DBObject, Func, DBQuery };
-fpmc.Object = DBObject;
+const fpmc :{[index:string]: any} = { init, ping, Object: DBObject, DBObject, Query: DBQuery, Func, DBQuery };
 
 export default fpmc;
-export { init, ping, DBObject as Object, Func, DBQuery };
+export { init, ping, DBObject as Object, Func, DBQuery, DBQuery as Query };
 export { fpmc };
 
 
