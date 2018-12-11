@@ -1,0 +1,15 @@
+<html>
+  <body>
+    <script src="https://unpkg.com/fpmc-jssdk@1.0.0/dist/fpmc-v1.0.0.min.js"></script>
+    <script>
+    console.log(fpmc)
+    const { init, DBQuery } = fpmc;
+    init({ appkey: '123123', masterKey: '123123', endpoint: 'http://localhost:9999/api', v: '0.0.1' });
+    var query = new DBQuery('test');
+    query.first().then(function(data){
+      console.log(data);
+    }).catch(console.error);
+    </script>
+
+  </body>
+</html>

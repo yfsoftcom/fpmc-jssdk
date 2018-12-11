@@ -1,12 +1,17 @@
 {
-  "name": "yf-fpm-client-js",
-  "version": "1.0.2",
+  "name": "fpmc-jssdk",
+  "version": "1.0.0",
   "description": "An Js Client SDK For FPM-Server",
   "main": "lib/index.js",
   "scripts": {
-    "compile": "./node_modules/.bin/babel -d lib/ src/",
-    "prepublishOnly": "npm run compile",
-    "test": "./node_modules/.bin/mocha test/*.test.js"
+    "prepublishOnly": "npm run gulp:node && npm run gulp:js",
+    "test": "./node_modules/.bin/mocha test/*.test.js",
+    "docker": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "gulp:node": "./node_modules/.bin/gulp node",
+    "gulp:js": "./node_modules/.bin/gulp browserify",
+    "demo": "./node_modules/.bin/http-server . -d False -s --cors -c-1 -p 8088",
+    "faker": "node ./faker.js"
   },
   "keywords": [
     "fpm",
@@ -18,14 +23,21 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.18.0",
-    "lodash": "^4.17.4"
+    "ts-md5": "^1.2.4"
   },
   "devDependencies": {
-    "babel-cli": "^6.22.2",
-    "babel-core": "^6.14.0",
-    "babel-plugin-transform-runtime": "^6.0.0",
-    "babel-preset-env": "^1.6.1",
     "babel-runtime": "^6.0.0",
-    "mocha": "^3.2.0"
+    "browserify": "^16.2.3",
+    "fpm-plugin-mysql": "^1.1.4",
+    "gulp": "^3.9.1",
+    "gulp-typescript": "^5.0.0",
+    "gulp-uglify": "^3.0.1",
+    "http-server": "^0.11.1",
+    "mocha": "^3.2.0",
+    "tsify": "^4.0.1",
+    "typescript": "^3.2.2",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0",
+    "yf-fpm-server": "^2.5.0"
   }
 }
