@@ -19,3 +19,6 @@ cache/*.json
 public/dist/*
 
 lib/
+
+config.json
+dist/
