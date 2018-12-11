@@ -144,8 +144,6 @@ abstract class AbsQuery implements Query{
     }
   }
 
-
-
 }
 
 export default AbsQuery;

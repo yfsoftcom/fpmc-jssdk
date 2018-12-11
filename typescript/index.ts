@@ -7,9 +7,11 @@ import Constant from './Constant';
 function init(options: {[index:string]: any}): void{
   Constant.setOptions( options );
 }
-const fpmc = { init, ping, DBObject, Func, DBQuery };
+const fpmc :{[index:string]: any} = { init, ping, DBObject, Func, DBQuery };
+fpmc.Object = DBObject;
+
 export default fpmc;
-export { init, ping, DBObject, Func, DBQuery };
+export { init, ping, DBObject as Object, Func, DBQuery };
 export { fpmc };
 
 if(typeof window !== 'undefined'){
