@@ -10,7 +10,7 @@
     "docker": "docker-compose up -d",
     "docker:down": "docker-compose down",
     "gulp:node": "./node_modules/.bin/gulp node",
-    "gulp:browserify": "./node_modules/.bin/gulp browserify",
+    "gulp:js": "./node_modules/.bin/gulp browserify",
     "demo": "./node_modules/.bin/http-server . -d False -s --cors -c-1 -p 8088",
     "faker": "node ./faker.js"
   },

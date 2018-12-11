@@ -12,4 +12,8 @@ export default fpmc;
 export { init, ping, DBObject, Func, DBQuery };
 export { fpmc };
 
+if(typeof window !== 'undefined'){
+  (window as any).fpmc = fpmc;
+}
+
 Constant.welcome();
