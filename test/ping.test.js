@@ -1,13 +1,12 @@
-var should = require("mocha").should;
-var YF = require("../lib/index.js").default;
-YF.init({ appkey: '123123', masterKey: '123123'});
-
+const assert = require('assert');
+const { ping } = require("../lib/index.js");
 
 describe('Ping', function(){
   it('Ping function', function(done){
-    YF.ping()
+    ping('http://localhost:9999/ping')
     .then(function(data){
-      console.log(data);
+      assert.strictEqual(data.errno, 0, 'Result Code should be 0');
+      assert.strictEqual(data.message, 'System online', 'Result Message should be system online');
       done();
     }).catch(function(err){
       done(err);

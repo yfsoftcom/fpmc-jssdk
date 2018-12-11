@@ -8,6 +8,9 @@ var tsify = require("tsify");
 var uglify = require('gulp-uglify');
 var buffer = require('vinyl-buffer');
 
+var pkgInfo = require('./package.json');
+const { version } = pkgInfo;
+
 gulp.task("node", function () {
   return tsProject.src()
     .pipe(tsProject())
@@ -24,8 +27,8 @@ gulp.task("browserify", function () {
     })
     .plugin(tsify)
     .bundle()
-    .pipe(source('bundle.js'))
-    // .pipe(buffer())
-    // .pipe(uglify())
+    .pipe(source(`fpmc-v${ version }.min.js`))
+    .pipe(buffer())
+    .pipe(uglify())
     .pipe(gulp.dest("dist"));
 });

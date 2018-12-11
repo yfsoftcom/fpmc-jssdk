@@ -10,7 +10,7 @@ class Constant{
   static welcome():void{
     if(!console.log)
       return;
-    console.log('welcome to use fpmc-js-sdk V: 2.0.0');
+    console.log('welcome to use fpmc-js-sdk V2');
   }
 
   private static _setted: boolean = false;

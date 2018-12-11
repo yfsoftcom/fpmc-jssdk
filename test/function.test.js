@@ -7,17 +7,17 @@ describe('Function', function(){
   it('call reject function', function(done){
     var func = new Func('test.foo');
     func.invoke().then(function(data){
-      console.log(data);
-      done();
+      done('should not be resolved~');
     }).catch(function(err){
-      done(err);
+      assert.strictEqual(err.errno, -3001, 'Reject -3001');
+      done();
     });
   });
 
   it('call resolve function', function(done){
     var func = new Func('test.bar');
     func.invoke().then(function(data){
-      console.log(data);
+      assert.strictEqual(data.status, 1, 'Should execute ok~');
       done();
     }).catch(function(err){
       done(err);

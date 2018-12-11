@@ -13,16 +13,14 @@
 # install
 
 ```bash
-$ npm i yf-fpm-client-js --save
-// or yarn
-$ yarn add yf-fpm-client-js
+$ npm i fpmc-jssdk --save
 ```
 
 # config
 
 ```javascript
-const fpmc = require('yf-fpm-client-js');
-fpmc.init({ mode: 'DEV', appkey: '123123', masterKey: '123123', domain: 'http://api.yunplus.io' });
+const fpmc = require('fpmc-jssdk');
+fpmc.init({ appkey: '123123', masterKey: '123123', endpoint: 'http://localhost:9999/api', v: '0.0.1' });
 ```
 
 # use
