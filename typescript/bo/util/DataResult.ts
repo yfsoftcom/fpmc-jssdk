@@ -8,6 +8,10 @@ class DataResult {
     this.objectId = objectId;
     this.data = data;
   }
+
+  get():{ [index: string]: any }{
+    return this.data;
+  }
 }
 
 export default DataResult;
