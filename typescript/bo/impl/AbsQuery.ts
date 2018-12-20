@@ -7,10 +7,13 @@ import { send } from '../../util/kit';
 import Constant from '../../Constant';
 import Exception from '../util/Exception';
 import ObjectId from '../util/ObjectId';
+import { IArgument } from '../IArgument';
 
 abstract class AbsQuery implements Query{
 
   private name: string;
+
+  _argument: IArgument;
 
   private _sorter: string;
 
@@ -29,13 +32,12 @@ abstract class AbsQuery implements Query{
 
   constructor(name: string){
     this.name = name;
-    this._fieldOfTable = this.getTableField();
-    this._functionNames = this.getFunctionNames();
+    this._argument = this.getArgument();
+    this._fieldOfTable = this._argument.getTableField();
+    this._functionNames = this._argument.getFunctionNames();
   }
 
-  protected abstract getTableField(): string;
-
-  protected abstract getFunctionNames(): {[index:string]: string};
+  abstract getArgument(): IArgument;
 
   sort(by: string): Query {
     this._sorter = by;
@@ -90,6 +92,7 @@ abstract class AbsQuery implements Query{
         condition: this._condtion
       };
       input[this._fieldOfTable] = this.name;
+      this._argument.assignArguments(input);
       const count = await send( this._functionNames.count, input, Constant.getOptions());
       return Promise.resolve(count);
     } catch (error) {
@@ -103,8 +106,13 @@ abstract class AbsQuery implements Query{
         fields: this._fields,
       };
       input[this._fieldOfTable] = this.name;
+      this._argument.assignArguments(input);
       const data = await send( this._functionNames.first, input, Constant.getOptions());
       const id = data.id || data.objectId || data._id || data.insertId;
+      if(id == undefined){
+        // nothing found
+        throw new Exception({ errno: -3, message: 'nothing found!' })
+      }
       return Promise.resolve(new DataResult(ObjectId.from(id), data));
     } catch (error) {
       throw error;
@@ -120,6 +128,7 @@ abstract class AbsQuery implements Query{
         skip: this._skip,
       };
       input[this._fieldOfTable] = this.name;
+      this._argument.assignArguments(input);
       const rows = await send( this._functionNames.find, input, Constant.getOptions());
       return Promise.resolve(rows);
     } catch (error) {
@@ -137,6 +146,7 @@ abstract class AbsQuery implements Query{
         skip: this._skip,
       };
       input[this._fieldOfTable] = this.name;
+      this._argument.assignArguments(input);
       const data = await send( this._functionNames.findAndCount, input, Constant.getOptions());
       return Promise.resolve(data);
     } catch (error) {

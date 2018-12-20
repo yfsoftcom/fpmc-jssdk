@@ -2,3 +2,4 @@ src/
 test/
 typescript/
 .babelrc
+data/

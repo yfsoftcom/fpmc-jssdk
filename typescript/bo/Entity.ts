@@ -3,6 +3,7 @@
  */
 import ObjectId from './util/ObjectId';
 import DataResult from './util/DataResult';
+import IArgument from './IArgument';
 
 interface Entity {
   // the entity name, it should be set when contstract
@@ -16,6 +17,8 @@ interface Entity {
   get( key?: string ): any;
 
   fields(fields: string): Entity;
+
+  getArgument(): IArgument;
 
   // create => entity with the objectId
   create( data ?: {[index:string]: any}): Promise<DataResult>;

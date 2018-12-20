@@ -1,8 +1,8 @@
 import IArgument from '../IArgument';
 
-abstract class MGArgument implements IArgument{
+class MGArgument implements IArgument{
 
-  protected _db:string = 'foo';
+  _db:string = 'foo';
 
   extendArguments(): { [index: string]: any; } {
     return { dbname: this._db };

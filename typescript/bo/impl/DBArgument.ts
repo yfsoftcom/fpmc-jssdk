@@ -1,16 +1,7 @@
 import IArgument from '../IArgument';
 
-abstract class DBArgument implements IArgument{
+class DBArgument implements IArgument{
 
-  // the mongodb might be 'collection'
-  protected _fieldOfTable: string = 'table';
-
-  protected _functionNames: {[index:string]: string};
-
-  constructor(){
-    this._fieldOfTable = this.getTableField();
-    this._functionNames = this.getFunctionNames();
-  }
   extendArguments(): { [index: string]: any; } {
     return {};
   }
@@ -29,6 +20,9 @@ abstract class DBArgument implements IArgument{
       remove: 'common.remove',
       clear: 'common.clear',
       batch: 'common.create',
+      count: 'common.count',
+      find: 'common.find',
+      findAndCount: 'common.findAndCount',
     }
   }
   

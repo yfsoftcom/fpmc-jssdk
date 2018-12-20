@@ -1,15 +1,17 @@
 {
   "name": "fpmc-jssdk",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "An Js Client SDK For FPM-Server",
   "main": "lib/index.js",
   "scripts": {
-    "prepublishOnly": "npm run gulp:node && npm run gulp:js",
+    "prepublishOnly": "./node_modules/.bin/gulp",
     "test": "./node_modules/.bin/mocha test/*.test.js",
     "docker": "docker-compose up -d",
     "docker:down": "docker-compose down",
     "gulp:node": "./node_modules/.bin/gulp node",
     "gulp:js": "./node_modules/.bin/gulp browserify",
+    "gulp:copy": "./node_modules/.bin/gulp copy",
+    "gulp": "./node_modules/.bin/gulp",
     "demo": "./node_modules/.bin/http-server . -d False -s --cors -c-1 -p 8088",
     "faker": "node ./faker.js"
   },
@@ -30,7 +32,7 @@
     "browserify": "^16.2.3",
     "fpm-plugin-mongo": "^1.0.2",
     "fpm-plugin-mysql": "^1.1.4",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.0",
     "gulp-typescript": "^5.0.0",
     "gulp-uglify": "^3.0.1",
     "http-server": "^0.11.1",

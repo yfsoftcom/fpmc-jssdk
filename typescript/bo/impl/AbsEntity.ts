@@ -4,30 +4,41 @@
 import Entity from '../Entity';
 import Condition from '../util/Condition';
 import DataResult from '../util/DataResult';
-import DBArgument from './DBArgument';
+import IArgument from '../IArgument';
 import { send } from '../../util/kit';
 import Constant from '../../Constant';
 import Exception from '../util/Exception';
 import ObjectId from '../util/ObjectId';
 
-abstract class AbsEntity extends DBArgument implements Entity{
-
+abstract class AbsEntity implements Entity{
   readonly name: string;
   objectId: ObjectId;
+
+  _argument: IArgument;
+
+  // the mongodb might be 'collection'
+  protected _fieldOfTable: string = 'table';
+
+  protected _functionNames: {[index:string]: string};
 
   private _data :{[index:string]: any} = {};
 
   private _fields : string = '*';
 
   constructor( name: string, data ?: {[index:string]: any} ){
-    super();
+    
     this.name = name;
+    this._argument = this.getArgument();
+    this._fieldOfTable = this._argument.getTableField();
+    this._functionNames = this._argument.getFunctionNames();
     
     if( data != undefined ){
       this._data = data;
       this.objectId = ObjectId.from( data.id || data.objectId );
     }
   }
+
+  abstract getArgument(): IArgument;
 
   set( kv: any, val ?: any ): Entity{
     if( typeof(kv) == 'object')
@@ -64,7 +75,7 @@ abstract class AbsEntity extends DBArgument implements Entity{
         rows: datas,
       };
       input[this._fieldOfTable] = this.name;
-      this.assignArguments(input);
+      this._argument.assignArguments(input);
       const rsp = await send( this._functionNames.batch, input, Constant.getOptions());
       const { affectedRows, changedRows, n } = rsp;
       const rowsNumber = ( affectedRows || changedRows || n );
@@ -92,7 +103,7 @@ abstract class AbsEntity extends DBArgument implements Entity{
         row: this._data,
       };
       input[this._fieldOfTable] = this.name;
-      this.assignArguments(input);
+      this._argument.assignArguments(input);
       const rsp = await send( this._functionNames.create, input, Constant.getOptions());
       const id = rsp.insertId || rsp.id || rsp._id || rsp.ObjectId;
       if(id == undefined)
@@ -122,7 +133,7 @@ abstract class AbsEntity extends DBArgument implements Entity{
         id: this.objectId.stringValue(),
       };
       input[this._fieldOfTable] = this.name;
-      this.assignArguments(input);
+      this._argument.assignArguments(input);
       // wait to update, and need not feedback data if no error
       await send( this._functionNames.save, input, Constant.getOptions());
       this._data = (<any>Object).assign(this._data, row);
@@ -142,7 +153,7 @@ abstract class AbsEntity extends DBArgument implements Entity{
         fields: this._fields,
       };
       input[this._fieldOfTable] = this.name;
-      this.assignArguments(input);
+      this._argument.assignArguments(input);
       const data = await send( this._functionNames.first, input, Constant.getOptions());
       // find nothing;
       console.log(data);
@@ -169,7 +180,7 @@ abstract class AbsEntity extends DBArgument implements Entity{
         fields: this._fields,
       };
       input[this._fieldOfTable] = this.name;
-      this.assignArguments(input);
+      this._argument.assignArguments(input);
       const data = await send( this._functionNames.get, input, Constant.getOptions());
       this.set(data);
       return Promise.resolve(new DataResult(this.objectId, this._data));
@@ -188,7 +199,7 @@ abstract class AbsEntity extends DBArgument implements Entity{
         id: this.objectId.stringValue(),
       };
       input[this._fieldOfTable] = this.name;
-      this.assignArguments(input);
+      this._argument.assignArguments(input);
       // wait to remove, and need not feedback data if no error
       const rsp = await send( this._functionNames.remove, input, Constant.getOptions());
       const { affectedRows, changedRows, n } = rsp;
@@ -208,7 +219,7 @@ abstract class AbsEntity extends DBArgument implements Entity{
         fields: this._fields,
       };
       input[this._fieldOfTable] = this.name;
-      this.assignArguments(input);
+      this._argument.assignArguments(input);
       const rsp = await send( this._functionNames.clear, input, Constant.getOptions());
       const { affectedRows, changedRows, n } = rsp;
       const rowsNumber = ( affectedRows || changedRows || n );

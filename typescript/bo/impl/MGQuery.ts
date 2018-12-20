@@ -1,27 +1,21 @@
 import AbsQuery from './AbsQuery';
 import { Query } from '../Query';
+import { IArgument } from '../IArgument';
+import MGArgument from './MGArgument';
 
 class MGQuery extends AbsQuery{
+
+  getArgument(): IArgument {
+    const argument = new MGArgument();
+    argument._db = this._db;
+    return argument;
+  }
 
   private _db:string = 'foo';
 
   constructor(db:string, name: string){
     super(name);
     this._db = db;
-  }
-
-  protected getTableField(): string {
-    return 'table';
-  }
-
-  protected getFunctionNames(): { [index: string]: string } {
-    return {
-      first: 'mongo.first',
-      get: 'mongo.get',
-      count: 'mongo.count',
-      find: 'mongo.find',
-      findAndCount: 'mongo.findAndCount',
-    }
   }
 
   or(condition: { [index: string]: any; }): Query {

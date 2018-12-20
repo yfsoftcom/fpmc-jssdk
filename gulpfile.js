@@ -8,6 +8,8 @@ var tsify = require("tsify");
 var uglify = require('gulp-uglify');
 var buffer = require('vinyl-buffer');
 
+var fs = require('fs');
+
 var pkgInfo = require('./package.json');
 const { version } = pkgInfo;
 
@@ -18,7 +20,7 @@ gulp.task("node", function () {
 });
 
 gulp.task("browserify", function () {
-  return browserify({
+  return build = browserify({
       basedir: '.',
       debug: true,
       entries: ['./typescript/index.ts'],
@@ -28,7 +30,15 @@ gulp.task("browserify", function () {
     .plugin(tsify)
     .bundle()
     .pipe(source(`fpmc-v${ version }.min.js`))
+    // .pipe(source(`fpmc-latest.min.js`))
     .pipe(buffer())
     .pipe(uglify())
     .pipe(gulp.dest("dist"));
 });
+
+gulp.task('copy', function(done){
+  fs.copyFileSync(`dist/fpmc-v${ version }.min.js`, 'dist/fpmc-latest.min.js');
+  done();
+})
+
+gulp.task('default', gulp.series('node', 'browserify', 'copy') );
