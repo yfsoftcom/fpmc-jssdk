@@ -4,42 +4,30 @@
 import Entity from '../Entity';
 import Condition from '../util/Condition';
 import DataResult from '../util/DataResult';
+import DBArgument from './DBArgument';
 import { send } from '../../util/kit';
 import Constant from '../../Constant';
 import Exception from '../util/Exception';
 import ObjectId from '../util/ObjectId';
 
-abstract class AbsEntity implements Entity{
+abstract class AbsEntity extends DBArgument implements Entity{
 
   readonly name: string;
   objectId: ObjectId;
-
-  // the mongodb might be 'collection'
-  protected _fieldOfTable: string = 'table';
-
-  protected _functionNames: {[index:string]: string};
 
   private _data :{[index:string]: any} = {};
 
   private _fields : string = '*';
 
   constructor( name: string, data ?: {[index:string]: any} ){
+    super();
     this.name = name;
-
-    this._fieldOfTable = this.getTableField();
-    this._functionNames = this.getFunctionNames();
     
     if( data != undefined ){
       this._data = data;
       this.objectId = ObjectId.from( data.id || data.objectId );
     }
   }
-
-  protected abstract getTableField(): string;
-
-  protected abstract getFunctionNames(): {[index:string]: string};
-
-  protected abstract extendArguments(): {[index:string]: any};
 
   set( kv: any, val ?: any ): Entity{
     if( typeof(kv) == 'object')
@@ -60,14 +48,6 @@ abstract class AbsEntity implements Entity{
     return this;
   }
 
-  private assignArguments(input:{[index:string]: any}) {
-    const args = this.extendArguments();
-    if(!args) 
-      return;
-    for (let key in args) {
-      input[key] = args[key];
-    }
-  }
   async batch( datas: Array<{[index:string]: any}>): Promise<number>{
     const _now = new Date().getTime();
     if( datas == undefined )

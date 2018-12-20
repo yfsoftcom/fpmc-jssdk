@@ -104,7 +104,7 @@ abstract class AbsQuery implements Query{
       };
       input[this._fieldOfTable] = this.name;
       const data = await send( this._functionNames.first, input, Constant.getOptions());
-      const id = data.id || data.objectId || data.insertId;
+      const id = data.id || data.objectId || data._id || data.insertId;
       return Promise.resolve(new DataResult(ObjectId.from(id), data));
     } catch (error) {
       throw error;
