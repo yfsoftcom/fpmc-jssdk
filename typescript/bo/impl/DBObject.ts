@@ -1,6 +1,9 @@
 import AbsEntity from './AbsEntity';
 
 class DBObject extends AbsEntity {
+  protected extendArguments(): { [index: string]: any; } {
+    return {};
+  }
 
   protected getTableField(): string {
     return 'table';
@@ -12,8 +15,10 @@ class DBObject extends AbsEntity {
       first: 'common.first',
       get: 'common.get',
       update: 'common.update',
+      save: 'common.update',
       remove: 'common.remove',
       clear: 'common.clear',
+      batch: 'common.create',
     }
   }
 }

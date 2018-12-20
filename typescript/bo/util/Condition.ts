@@ -31,6 +31,8 @@ class Condition{
   }
 
   format(): any{
+    if(this._condition == undefined)
+      return {};
     return this._condition;
   }
 
