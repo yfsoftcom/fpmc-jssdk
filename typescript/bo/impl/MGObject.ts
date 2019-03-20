@@ -4,17 +4,17 @@ import MGArgument from './MGArgument';
 
 class MGObject extends AbsEntity {
 
-  _db: string;
+  // _db: string;
+  _argument: MGArgument;
 
   constructor( db: string, name: string, data ?: {[index:string]: any} ){
     super(name, data);
-    this._db = db;
+    this._argument._db = db;
   }
 
   getArgument(): IArgument {
-    const argument = new MGArgument();
-    argument._db = this._db;
-    return argument;
+    this._argument = new MGArgument();
+    return this._argument;
   }
 
 }

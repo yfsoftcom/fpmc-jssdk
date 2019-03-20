@@ -31,7 +31,6 @@ abstract class AbsEntity implements Entity{
     this._argument = this.getArgument();
     this._fieldOfTable = this._argument.getTableField();
     this._functionNames = this._argument.getFunctionNames();
-    
     if( data != undefined ){
       this._data = data;
       this.objectId = ObjectId.from( data.id || data.objectId );
@@ -103,6 +102,7 @@ abstract class AbsEntity implements Entity{
         row: this._data,
       };
       input[this._fieldOfTable] = this.name;
+      
       this._argument.assignArguments(input);
       const rsp = await send( this._functionNames.create, input, Constant.getOptions());
       const id = rsp.insertId || rsp.id || rsp._id || rsp.ObjectId;
@@ -156,7 +156,6 @@ abstract class AbsEntity implements Entity{
       this._argument.assignArguments(input);
       const data = await send( this._functionNames.first, input, Constant.getOptions());
       // find nothing;
-      console.log(data);
       if(data == undefined && data == null){
         throw new Exception({ errno: -3, message: 'nothing find' });
       }

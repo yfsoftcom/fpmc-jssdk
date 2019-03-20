@@ -4,7 +4,7 @@ init({ appkey: '123123', masterKey: '123123', endpoint: 'http://localhost:9999/a
 
 describe('MGObject', function(){
   before('', function(done){
-    const obj = new MGObject('testDB', 'test');
+    const obj = new MGObject('fuuu', 'test');
     obj.clear()
       .then(data => {
         done();
@@ -13,7 +13,7 @@ describe('MGObject', function(){
   })
 
   after('', function(done){
-    const obj = new MGObject('testDB', 'test');
+    const obj = new MGObject('fuuu', 'test');
     obj.clear()
       .then(data => {
         done();
@@ -22,7 +22,7 @@ describe('MGObject', function(){
   })
 
   it('Create function', function(done){
-    const obj = new MGObject('testDB', 'test');
+    const obj = new MGObject('fuuu', 'test');
     obj.set({
       name: 't1',
       val: '0.1',
@@ -36,7 +36,7 @@ describe('MGObject', function(){
   });
 
   it('Update function', async () =>{
-    const obj = new MGObject('testDB', 'test', { id: '5c1afda2ffe2a93a8b61d912' });
+    const obj = new MGObject('fuuu', 'test', { id: '5c1afda2ffe2a93a8b61d912' });
     obj.set({
       name: '-t1',
       val: '-0.1',
@@ -50,7 +50,7 @@ describe('MGObject', function(){
   });
 
   it('Remove function', function(done){
-    const obj = new MGObject('testDB', 'test');
+    const obj = new MGObject('fuuu', 'test');
     obj.remove('5c1afda2ffe2a93a8b61d912').then(function(o){
       assert.strictEqual(o, true, 'should be return true, if ok')
       done();
@@ -60,7 +60,7 @@ describe('MGObject', function(){
   });
 
   it('getById function', function(done){
-    const obj = new MGObject('testDB', 'test');
+    const obj = new MGObject('fuuu', 'test');
     obj.getById('5c1afda2ffe2a93a8b61d912').then(function(o){
       console.log(o)
       // assert.strictEqual(o, true, 'should be return true, if ok')
@@ -71,7 +71,7 @@ describe('MGObject', function(){
   });
 
   it('getByCondition function', function(done){
-    const obj = new MGObject('testDB', 'test');
+    const obj = new MGObject('fuuu', 'test');
     obj.fields('id,name,val').getByCondition({ name: 't2'}).then(function(o){
       console.log(o)
       // assert.strictEqual(o, true, 'should be return true, if ok')
@@ -82,7 +82,7 @@ describe('MGObject', function(){
   });
 
   it('Batch Create function', function(done){
-    const obj = new MGObject('testDB', 'test');
+    const obj = new MGObject('fuuu', 'test');
     obj.batch([{
       name: 'a1',
       val: 'v1',
