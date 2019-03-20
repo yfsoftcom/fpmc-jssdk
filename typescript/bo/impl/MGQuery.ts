@@ -5,17 +5,16 @@ import MGArgument from './MGArgument';
 
 class MGQuery extends AbsQuery{
 
-  getArgument(): IArgument {
-    const argument = new MGArgument();
-    argument._db = this._db;
-    return argument;
-  }
+  _argument: MGArgument;
 
-  private _db:string = 'foo';
+  getArgument(): IArgument {
+    this._argument = new MGArgument();
+    return this._argument;
+  }
 
   constructor(db:string, name: string){
     super(name);
-    this._db = db;
+    this._argument._db = db;
   }
 
   or(condition: { [index: string]: any; }): Query {
