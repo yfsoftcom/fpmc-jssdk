@@ -28,10 +28,9 @@
     "ts-md5": "^1.2.4"
   },
   "devDependencies": {
-    "babel-runtime": "^6.0.0",
     "browserify": "^16.2.3",
-    "fpm-plugin-mongo": "^1.0.2",
-    "fpm-plugin-mysql": "^1.1.4",
+    "fpm-plugin-mongo": "^1.2.0",
+    "fpm-plugin-mysql": "^1.3.0",
     "gulp": "^4.0.0",
     "gulp-typescript": "^5.0.0",
     "gulp-uglify": "^3.0.1",
@@ -41,6 +40,6 @@
     "typescript": "^3.2.2",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0",
-    "yf-fpm-server": "^2.5.0"
+    "yf-fpm-server": "^2.6.1"
   }
 }
