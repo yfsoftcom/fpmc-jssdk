@@ -22,22 +22,19 @@ services:
     networks: 
       - dev-network
 
-  mongo:  # 会自动从Docker Hub上自动获取mongo这个镜像
+  mongo: 
     image: 'mongo'
     container_name: 'mongo_server'
     restart: always
-    volumes:
-      - ./data:/data/db/
     ports:
-      - 27017:27017  # 本地端口(可自定义):容器内默认端口(mongo设定为27017)
-    environment:  # admin账号和密码
+      - 27017:27017
+    environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin
     networks: 
       - dev-network
   manager:
-    # mongodb://admin:admin@127.0.0.1
-    image: 'mrvautin/adminmongo'
+    image: 'yfsoftcom/adminmongo'
     restart: always
     ports:
       - 1234:1234

@@ -3,3 +3,4 @@ test/
 typescript/
 .babelrc
 data/
+*.log

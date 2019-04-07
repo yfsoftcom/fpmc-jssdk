@@ -1,31 +1,65 @@
-# yf-fpm-client-js
-> A nodejs sdk for fpm-server, Acturally, It's a javascript client of the http server. Here is the [API](./API.md). 
+# fpmc-jssdk
+> A js client sdk for fpm-server, Acturally, It's a javascript client of the http server. Here is the [API](./API.md). 
 
 - Table of content
-  - install
-  - config
-  - use
+  - Install
+  - Init
+  - Usage
     - Query
     - Object
     - Batch
     - Function
+    - MGQuery
+    - MGObject
 
-# install
+## install
 
-```bash
-$ npm i fpmc-jssdk --save
-```
+- In Node.js
 
-# config
+  ```bash
+  $ npm i fpmc-jssdk --save
+  ```
+- In Browser
+
+  ```html
+  <script src="https://unpkg.com/fpmc-jssdk@latest/dist/fpmc-latest.min.js"></script>
+  ```
+## Init
+
+- In Nodej.js
+
+  ```javascript
+  const fpmc = require('fpmc-jssdk');
+  fpmc.init({ appkey: '123123', masterKey: '123123', endpoint: 'http://localhost:9999/api', v: '0.0.1' });
+  ```
+
+- In Browser
+
+  ```javascript
+  fpmc.init({ appkey: '123123', masterKey: '123123', endpoint: 'http://localhost:9999/api', v: '0.0.1' });
+  ```
+
+## config
 
 ```javascript
 const fpmc = require('fpmc-jssdk');
 fpmc.init({ appkey: '123123', masterKey: '123123', endpoint: 'http://localhost:9999/api', v: '0.0.1' });
 ```
 
-# use
+## Usage
 
-## Query
+```javascript
+const { ping, Func, DBObject, DBQuery, MGObject, MGQuery } = fpmc;
+```
+
+- Query
+
+```javascript
+const fpmc = require('fpmc-jssdk');
+fpmc.init({ appkey: '123123', masterKey: '123123', endpoint: 'http://localhost:9999/api', v: '0.0.1' });
+```
+
+### Query
 
 it's support `find` , `first`, `count` , `findAndCount` methods;
 

@@ -23,3 +23,5 @@ lib/
 config.json
 dist/
 data/
+
+package-lock.json
