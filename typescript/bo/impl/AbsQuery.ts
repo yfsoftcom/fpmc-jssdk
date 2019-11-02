@@ -11,11 +11,13 @@ import { IArgument } from '../IArgument';
 
 abstract class AbsQuery implements Query{
 
-  private name: string;
+  protected name: string;
 
   _argument: IArgument;
 
   private _sorter: string;
+
+  protected _groupBy: string;
 
   private _limit: number = 100;
 
@@ -23,12 +25,14 @@ abstract class AbsQuery implements Query{
 
   private _condtion:  { [index: string]: any; } = { };
 
-  private _fields: string = '*';
+  protected _fields: string = '*';
 
   // the mongodb might be 'collection'
   protected _fieldOfTable: string = 'table';
 
   protected _functionNames: {[index:string]: string};
+
+  protected _send = send;
 
   constructor(name: string){
     this.name = name;
@@ -108,6 +112,10 @@ abstract class AbsQuery implements Query{
       input[this._fieldOfTable] = this.name;
       this._argument.assignArguments(input);
       const data = await send( this._functionNames.first, input, Constant.getOptions());
+      if(data == undefined){
+        // nothing found
+        throw new Exception({ errno: -3, message: 'nothing found!' })
+      }
       const id = data.id || data.objectId || data._id || data.insertId;
       if(id == undefined){
         // nothing found
@@ -128,6 +136,9 @@ abstract class AbsQuery implements Query{
         skip: this._skip,
       };
       input[this._fieldOfTable] = this.name;
+      if(!!this._groupBy){
+        input['groupBy'] = this._groupBy;
+      }
       this._argument.assignArguments(input);
       const rows = await send( this._functionNames.find, input, Constant.getOptions());
       return Promise.resolve(rows);

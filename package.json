@@ -4,15 +4,15 @@
   "description": "An Js Client SDK For FPM-Server",
   "main": "lib/index.js",
   "scripts": {
-    "prepublishOnly": "./node_modules/.bin/gulp",
-    "test": "./node_modules/.bin/mocha test/*.test.js",
+    "prepublishOnly": "npx gulp",
+    "test": "npx mocha test/*.test.js",
     "docker": "docker-compose up -d",
     "docker:down": "docker-compose down",
-    "gulp:node": "./node_modules/.bin/gulp node",
-    "gulp:js": "./node_modules/.bin/gulp browserify",
-    "gulp:copy": "./node_modules/.bin/gulp copy",
-    "gulp": "./node_modules/.bin/gulp",
-    "demo": "./node_modules/.bin/http-server . -d False -s --cors -c-1 -p 8088",
+    "gulp:node": "npx gulp node",
+    "gulp:js": "npx gulp browserify",
+    "gulp:copy": "npx gulp copy",
+    "gulp": "npx gulp",
+    "demo": "npx http-server . -d False -s --cors -c-1 -p 8088",
     "faker": "node ./faker.js"
   },
   "keywords": [
