@@ -11,6 +11,8 @@
     - Function
     - MGQuery
     - MGObject
+    - InfluxQuery
+    - InfluxObject
   - Usage -> [here](https://github.com/yfsoftcom/fpmc-jssdk/wiki/Usage)
   - API -> [here](https://github.com/yfsoftcom/fpmc-jssdk/wiki/API)
   - ChangeLog -> [here](https://github.com/yfsoftcom/fpmc-jssdk/wiki/Changelog)
@@ -45,8 +47,10 @@
 ## Usage
 
   ```javascript
-  const { ping, Func, DBObject, DBQuery, MGObject, MGQuery } = fpmc;
+  const { ping, Func, DBObject, DBQuery, MGObject, MGQuery, InfluxQuery, InfluxObject } = fpmc;
   ```
+
+**Important**: Influx Only Support[`first`,`count`, `find`, `create`, `batch`, `clear`]
 
 ### Query
 

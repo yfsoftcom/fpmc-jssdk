@@ -23,6 +23,7 @@ class InfluxArgument implements IArgument{
       count: 'influx.count',
       find: 'influx.find',
       findAndCount: 'influx.?',
+      query: 'influx.query',
     }
   }
   

@@ -34,9 +34,19 @@ describe('InfluxQuery', function(){
     });
   });
 
+  it('query function', function(done){
+    var query = new InfluxQuery('cpu_load_short' );
+    query.query(`select * from cpu_load_short order by time desc`).then(function(data){
+      console.log(data);
+      done();
+    }).catch(function(err){
+      done(err);
+    });
+  });
+
   it('count function', function(done){
     var query = new InfluxQuery('cpu_load_short' );
-    query.condition(`value < 0.91 and host='server01'`).count().then(function(data){
+    query.condition(`value < 0.91 and host='server06'`).count().then(function(data){
       console.log(data);
       assert( data > 0, 'should > 0');
       done();

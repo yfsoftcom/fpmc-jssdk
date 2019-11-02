@@ -165,6 +165,18 @@ abstract class AbsQuery implements Query{
     }
   }
 
+  async query(query: string): Promise<[]>{
+    try {
+      const input:{[index:string]: any} = {
+        query,
+      };
+      const rows = await send( this._functionNames.query, input, Constant.getOptions());
+      return Promise.resolve(rows);
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }
 
 export default AbsQuery;
