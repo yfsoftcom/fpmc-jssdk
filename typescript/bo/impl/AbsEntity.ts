@@ -105,7 +105,7 @@ abstract class AbsEntity implements Entity{
       
       this._argument.assignArguments(input);
       const rsp = await send( this._functionNames.create, input, Constant.getOptions());
-      const id = rsp.insertId || rsp.id || rsp._id || rsp.ObjectId;
+      const id = rsp.insertId || rsp.id || rsp._id || rsp.ObjectId || rsp.time;
       if(id == undefined)
         throw new Exception({ message: 'create Error: no inserted Id return ' });
       this.set('id', id);
