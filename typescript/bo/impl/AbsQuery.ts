@@ -108,6 +108,7 @@ abstract class AbsQuery implements Query{
       const input:{[index:string]: any} = {
         condition: this._condtion,
         fields: this._fields,
+        sort: this._sorter,
       };
       input[this._fieldOfTable] = this.name;
       this._argument.assignArguments(input);
