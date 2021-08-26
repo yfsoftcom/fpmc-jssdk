@@ -30,11 +30,11 @@ async function ping(uri: string): Promise < object > {
   }
 }
 
-async function send(method: string, 
-  args?: { [index: string]: any }, 
+async function send(method: string,
+  args?: { [index: string]: any },
   options?: { [index: string]: any }): Promise<any> {
 
-    // seriralize the json data
+    // serialize the json data
   const strOfArgs = JSON.stringify(args);
 
   // get the options

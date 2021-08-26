@@ -14,16 +14,16 @@ class Constant{
     console.log('welcome to use fpmc-js-sdk V2');
   }
 
-  private static _setted: boolean = false;
+  private static _settled: boolean = false;
 
   static setOptions(options: {[index:string]: any}){
-    Constant._setted = true;
+    Constant._settled = true;
     Constant._options =  (<any>Object).assign(Constant._options, options);
   }
 
   static getOptions(): {[index:string]: any}{
-    if(!Constant._setted && console.warn){
-      console.warn('Warnning: you have not call `init(Options)` for the sdk! do you mean to use the default options?', Constant._options);
+    if(!Constant._settled && console.warn){
+      console.warn('Warning: you have not call `init(Options)` for the sdk! do you mean to use the default options?', Constant._options);
     }
     return Constant._options;
   }
