@@ -26,7 +26,6 @@ abstract class AbsEntity implements Entity{
   private _fields : string = '*';
 
   constructor( name: string, data ?: {[index:string]: any} ){
-    
     this.name = name;
     this._argument = this.getArgument();
     this._fieldOfTable = this._argument.getTableField();
@@ -58,20 +57,20 @@ abstract class AbsEntity implements Entity{
     return this;
   }
 
-  async batch( datas: Array<{[index:string]: any}>): Promise<number>{
+  async batch( dataList: Array<{[index:string]: any}>): Promise<number>{
     const _now = new Date().getTime();
-    if( datas == undefined )
-      throw new Exception({ message: 'datas should not be undefined' });
-    const len = datas.length;
+    if( dataList == undefined )
+      throw new Exception({ message: 'dataList should not be undefined' });
+    const len = dataList.length;
     if( len < 1 )
-      throw new Exception({ message: ' datas length should more than 0' });
-    for( let d of datas ){
+      throw new Exception({ message: ' dataList length should more than 0' });
+    for( let d of dataList ){
       d.createAt = d.updateAt = _now;
     }
     try {
       const input:{[index:string]: any} = {
-        row: datas,
-        rows: datas,
+        row: dataList,
+        rows: dataList,
       };
       input[this._fieldOfTable] = this.name;
       this._argument.assignArguments(input);
@@ -79,7 +78,7 @@ abstract class AbsEntity implements Entity{
       const { affectedRows, changedRows, n } = rsp;
       const rowsNumber = ( affectedRows || changedRows || n );
       if( len != rowsNumber )
-        throw new Exception({ message: `Batch create error: the affectedRows ${ rowsNumber } not equal the datas.length ${ len }`});
+        throw new Exception({ message: `Batch create error: the affectedRows ${ rowsNumber } not equal the dataList.length ${ len }`});
       return Promise.resolve(len);
     } catch (error) {
       throw error;
@@ -102,7 +101,7 @@ abstract class AbsEntity implements Entity{
         row: this._data,
       };
       input[this._fieldOfTable] = this.name;
-      
+
       this._argument.assignArguments(input);
       const rsp = await send( this._functionNames.create, input, Constant.getOptions());
       const id = rsp.insertId || rsp.id || rsp._id || rsp.ObjectId || rsp.time;
@@ -188,7 +187,7 @@ abstract class AbsEntity implements Entity{
     }
   }
 
-  // remove => return ture/false
+  // remove => return true/false
   async remove( objectId ?: any ): Promise<boolean>{
     this.objectId = ObjectId.from(objectId) || this.objectId;
     if(ObjectId.isNull(this.objectId))
@@ -229,7 +228,7 @@ abstract class AbsEntity implements Entity{
   }
 
   // toString(json/object)
-  toString(formater ?: string | 'json'): string{
+  toString(formatter ?: string | 'json'): string{
     if(this._data)
       return JSON.stringify(this._data);
     return;

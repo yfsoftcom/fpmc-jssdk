@@ -23,7 +23,7 @@ abstract class AbsQuery implements Query{
 
   private _skip: number = 0;
 
-  private _condtion:  { [index: string]: any; } = { };
+  private _condition:  { [index: string]: any; } = { };
 
   protected _fields: string = '*';
 
@@ -59,12 +59,12 @@ abstract class AbsQuery implements Query{
   }
 
   condition(condition: { [index: string]: any; }): Query {
-    this._condtion = condition;
+    this._condition = condition;
     return this;
   }
 
   and(condition: { [index: string]: any; }): Query {
-    this._condtion = (<any>Object).assign(this._condtion, condition);
+    this._condition = (<any>Object).assign(this._condition, condition);
     return this;
   }
 
@@ -93,7 +93,7 @@ abstract class AbsQuery implements Query{
   async count(): Promise<number> {
     try {
       const input:{[index:string]: any} = {
-        condition: this._condtion
+        condition: this._condition
       };
       input[this._fieldOfTable] = this.name;
       this._argument.assignArguments(input);
@@ -106,7 +106,7 @@ abstract class AbsQuery implements Query{
   async first(): Promise<DataResult> {
     try {
       const input:{[index:string]: any} = {
-        condition: this._condtion,
+        condition: this._condition,
         fields: this._fields,
         sort: this._sorter,
       };
@@ -130,7 +130,7 @@ abstract class AbsQuery implements Query{
   async find(): Promise<[]>{
     try {
       const input:{[index:string]: any} = {
-        condition: this._condtion,
+        condition: this._condition,
         fields: this._fields,
         sort: this._sorter,
         limit: this._limit,
@@ -151,7 +151,7 @@ abstract class AbsQuery implements Query{
   async findAndCount(): Promise<{ [index: string]: any; }> {
     try {
       const input:{[index:string]: any} = {
-        condition: this._condtion,
+        condition: this._condition,
         fields: this._fields,
         sort: this._sorter,
         limit: this._limit,
