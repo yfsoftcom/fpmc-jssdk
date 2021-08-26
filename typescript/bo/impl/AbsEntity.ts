@@ -1,5 +1,5 @@
 /**
- * the abscract entity implement entity
+ * the abstract entity implement entity
  */
 import Entity from '../Entity';
 import Condition from '../util/Condition';

@@ -1,5 +1,5 @@
 /**
- * the absctract class for interface query
+ * the abstract class for interface query
  */
 import Query from '../Query';
 import DataResult from '../util/DataResult';
