@@ -8,10 +8,9 @@ class DBQuery extends AbsQuery{
     return new DBArgument();
   }
 
-  or(condition: { [index: string]: any; }): Query {
-    throw new Error("Method not implemented.");
+  eqJoin( joinKey: string, joinTable: string, indexKey: string ): Query {
+    return this;
   }
-
 }
 
 export default DBQuery;

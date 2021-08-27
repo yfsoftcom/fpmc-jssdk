@@ -42,6 +42,9 @@ abstract class AbsQuery implements Query{
   }
 
   abstract getArgument(): IArgument;
+  eqJoin( joinKey: string, joinTable: string, indexKey: string ): Query {
+    return this;
+  }
 
   sort(by: string): Query {
     this._sorter = by;
@@ -64,11 +67,9 @@ abstract class AbsQuery implements Query{
   }
 
   and(condition: { [index: string]: any; }): Query {
-    this._condition = (<any>Object).assign(this._condition, condition);
+    this._condition = { ...this._condition, ...condition };
     return this;
   }
-
-  abstract or(condition: { [index: string]: any; }): Query;
 
   select(fields: string): Query {
     this._fields = fields;

@@ -16,11 +16,6 @@ class MGQuery extends AbsQuery{
     super(name);
     this._argument._db = db;
   }
-
-  or(condition: { [index: string]: any; }): Query {
-    throw new Error("Method not implemented.");
-  }
-
 }
 
 export default MGQuery;

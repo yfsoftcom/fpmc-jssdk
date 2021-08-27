@@ -1,5 +1,5 @@
 /**
- * the condition 
+ * the condition parse utils.
  */
 import Exception from './Exception';
 

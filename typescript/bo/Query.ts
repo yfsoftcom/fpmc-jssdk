@@ -9,11 +9,11 @@ interface Query{
 
   condition( condition: {[index:string]: any} ): Query;
 
+  select( fields: string ): Query;
+
   and( condition: {[index:string]: any} ): Query;
 
-  or( condition: {[index:string]: any} ): Query;
-
-  select( fields: string ): Query;
+  eqJoin( joinKey: string, joinTable: string, indexKey: string ): Query;
 
   count(): Promise<number>;
 

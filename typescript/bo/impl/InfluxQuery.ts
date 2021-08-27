@@ -8,10 +8,6 @@ class InfluxQuery extends AbsQuery{
     return new InfluxArgument();
   }
 
-  or(condition: { [index: string]: any; }): Query {
-    throw new Error("Method not implemented.");
-  }
-
   select(fields: string): Query {
     this._fields = fields;
     return this;
