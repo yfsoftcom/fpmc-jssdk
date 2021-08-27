@@ -13,7 +13,7 @@ interface Query{
 
   and( condition: {[index:string]: any} ): Query;
 
-  eqJoin( joinKey: string, joinTable: string, indexKey: string ): Query;
+  eqJoin( joinKey: string, joinTable: string, indexKey: string, fields: string ): Query;
 
   count(): Promise<number>;
 

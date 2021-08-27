@@ -34,6 +34,11 @@ abstract class AbsQuery implements Query{
 
   protected _send = send;
 
+  // join fields
+  protected _join: { [index: string]: string; } = { };
+
+  protected _hasJoin: boolean = false;
+
   constructor(name: string){
     this.name = name;
     this._argument = this.getArgument();
@@ -42,7 +47,13 @@ abstract class AbsQuery implements Query{
   }
 
   abstract getArgument(): IArgument;
-  eqJoin( joinKey: string, joinTable: string, indexKey: string ): Query {
+
+  eqJoin( joinKey: string, joinTable: string, indexKey: string, fields: string ): Query {
+    this._join.key = joinKey;
+    this._join.table = joinTable;
+    this._join.index = indexKey;
+    this._join.fields = fields;
+    this._hasJoin = true;
     return this;
   }
 
@@ -71,11 +82,34 @@ abstract class AbsQuery implements Query{
     return this;
   }
 
+  formatTable(): string {
+    if (!this._hasJoin)
+      return this.name;
+    return this.name + ',' + this._join.table;
+  }
+
+  formatCondition(): any {
+    if (!this._hasJoin)
+      return this._condition;
+    if (typeof(this._condition) === 'string') {
+      return this._condition + ' and ' + `${this.name}.${this._join.key} = ${this._join.table}.${this._join.index}`;
+    } else {
+      return {
+        ...this.condition,
+        [this.name + '.' + this._join.key]: this._join.table + '.' + this._join.index,
+      };
+    }
+  }
+
   select(fields: string): Query {
     this._fields = fields;
     // select all fields
-    if(this._fields == '*')
+    if(this._fields == '*') {
+      if (this._hasJoin){
+        this._fields = this.name + '.*';
+      }
       return this;
+    }
     // part of the fields;
     const fieldsArr = fields.split(',')
     if(fieldsArr.indexOf('updateAt') < 0){
@@ -87,6 +121,9 @@ abstract class AbsQuery implements Query{
     if(fieldsArr.indexOf('id') < 0){
       fieldsArr.push('id');
     }
+    if (this._hasJoin) {
+      this._join.fields.split(',').forEach((x: string) => fieldsArr.push(this._join.table + '.' + x));
+    }
     this._fields = fieldsArr.join(',');
     return this;
   }
@@ -94,9 +131,9 @@ abstract class AbsQuery implements Query{
   async count(): Promise<number> {
     try {
       const input:{[index:string]: any} = {
-        condition: this._condition
+        condition: this.formatCondition(),
       };
-      input[this._fieldOfTable] = this.name;
+      input[this._fieldOfTable] = this.formatTable();
       this._argument.assignArguments(input);
       const count = await send( this._functionNames.count, input, Constant.getOptions());
       return Promise.resolve(count);
@@ -107,11 +144,11 @@ abstract class AbsQuery implements Query{
   async first(): Promise<DataResult> {
     try {
       const input:{[index:string]: any} = {
-        condition: this._condition,
+        condition: this.formatCondition(),
         fields: this._fields,
         sort: this._sorter,
       };
-      input[this._fieldOfTable] = this.name;
+      input[this._fieldOfTable] = this.formatTable();
       this._argument.assignArguments(input);
       const data = await send( this._functionNames.first, input, Constant.getOptions());
       if(data == undefined){
@@ -131,13 +168,13 @@ abstract class AbsQuery implements Query{
   async find(): Promise<[]>{
     try {
       const input:{[index:string]: any} = {
-        condition: this._condition,
+        condition: this.formatCondition(),
         fields: this._fields,
         sort: this._sorter,
         limit: this._limit,
         skip: this._skip,
       };
-      input[this._fieldOfTable] = this.name;
+      input[this._fieldOfTable] = this.formatTable();
       if(!!this._groupBy){
         input['groupBy'] = this._groupBy;
       }
@@ -152,13 +189,13 @@ abstract class AbsQuery implements Query{
   async findAndCount(): Promise<{ [index: string]: any; }> {
     try {
       const input:{[index:string]: any} = {
-        condition: this._condition,
+        condition: this.formatCondition(),
         fields: this._fields,
         sort: this._sorter,
         limit: this._limit,
         skip: this._skip,
       };
-      input[this._fieldOfTable] = this.name;
+      input[this._fieldOfTable] = this.formatTable();
       this._argument.assignArguments(input);
       const data = await send( this._functionNames.findAndCount, input, Constant.getOptions());
       return Promise.resolve(data);

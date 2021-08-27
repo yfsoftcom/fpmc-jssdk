@@ -1,5 +1,5 @@
 # fpmc-jssdk
-> A js client sdk for fpm-server, Acturally, It's a javascript client of the http server.
+> A js client sdk for fpm-server, Actually, It's a javascript client of the http server.
 
 - Table of content
   - Install
@@ -31,7 +31,7 @@
   ```
 ## Init
 
-- In Nodej.js
+- In Nodejs
 
   ```javascript
   const fpmc = require('fpmc-jssdk');
