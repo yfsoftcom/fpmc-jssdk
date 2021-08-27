@@ -85,18 +85,18 @@ abstract class AbsQuery implements Query{
   formatTable(): string {
     if (!this._hasJoin)
       return this.name;
-    return this.name + ',' + this._join.table;
+    return `${this.name}, (select ${this._join.fields} from ${this._join.table} where delflag = 0) as r`;
   }
 
   formatCondition(): any {
     if (!this._hasJoin)
       return this._condition;
     if (typeof(this._condition) === 'string') {
-      return this._condition + ' and ' + `${this.name}.${this._join.key} = ${this._join.table}.${this._join.index}`;
+      return this._condition + ' and ' + `${this.name}.${this._join.key} = r.${this._join.index}`;
     } else {
       return {
-        ...this.condition,
-        [this.name + '.' + this._join.key]: this._join.table + '.' + this._join.index,
+        ...this._condition,
+        [this.name + '.' + this._join.key]: 'r.' + this._join.index,
       };
     }
   }
@@ -122,7 +122,7 @@ abstract class AbsQuery implements Query{
       fieldsArr.push('id');
     }
     if (this._hasJoin) {
-      this._join.fields.split(',').forEach((x: string) => fieldsArr.push(this._join.table + '.' + x));
+      this._join.fields.split(',').forEach((x: string) => fieldsArr.push('r.' + x));
     }
     this._fields = fieldsArr.join(',');
     return this;
