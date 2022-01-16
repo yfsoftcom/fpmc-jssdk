@@ -1,6 +1,6 @@
 const assert = require('assert');
 const { init, MGObject } = require("../lib/index.js");
-init({ appkey: '123123', masterKey: '123123', endpoint: 'http://localhost:9999/api' });
+init({ appkey: '123123', masterKey: '123123', domain: 'http://localhost:9999' });
 
 describe('MGObject', function(){
   before('', function(done){

@@ -5,9 +5,12 @@
   "main": "lib/index.js",
   "scripts": {
     "prepublishOnly": "npx gulp",
-    "test": "npx mocha test/*.test.js",
-    "docker": "docker-compose up -d",
-    "docker:down": "docker-compose down",
+    "test": "jest",
+    "pretest": "yarn gulp",
+    "docker:mysql": "docker-compose -f docker-compose/mysql.yml up -d",
+    "docker:mongo": "docker-compose -f docker-compose/mongo.yml up -d",
+    "docker:mongo:down": "docker-compose -f docker-compose/mongo.yml down",
+    "docker:mysql:down": "docker-compose -f docker-compose/mysql.yml down",
     "gulp:node": "npx gulp node",
     "gulp:js": "npx gulp browserify",
     "gulp:copy": "npx gulp copy",
@@ -30,16 +33,16 @@
   "devDependencies": {
     "browserify": "^16.2.3",
     "fpm-plugin-mongo": "^1.2.0",
-    "fpm-plugin-mysql": "^1.3.0",
+    "fpm-plugin-mysql": "^1.3.4",
     "gulp": "^4.0.0",
     "gulp-typescript": "^5.0.0",
     "gulp-uglify": "^3.0.1",
-    "http-server": "^0.11.1",
-    "mocha": "^3.2.0",
-    "tsify": "^4.0.1",
-    "typescript": "^3.2.2",
+    "http-server": "^14.1.0",
+    "jest": "^27.4.7",
+    "tsify": "^5.0.4",
+    "typescript": "^4.5.4",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0",
-    "yf-fpm-server": "^2.6.1"
+    "yf-fpm-server": "^2.7.4"
   }
 }

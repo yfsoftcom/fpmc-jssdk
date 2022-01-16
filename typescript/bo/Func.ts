@@ -1,5 +1,5 @@
 import { send } from '../util/kit';
-import Constant from '../Constant';
+import { getOptions } from '../options';
 
 class Func{
   _funcName: string;
@@ -10,7 +10,7 @@ class Func{
 
   async invoke( args?: { [index: string]: any }): Promise<{ [index: string]: any }>{
     try {
-      return await send( this._funcName, (args || {}), Constant.getOptions());
+      return await send( this._funcName, (args || {}), getOptions());
     } catch (error) {
       throw error;
     }

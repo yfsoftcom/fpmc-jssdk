@@ -1,28 +1,7 @@
 
 version: '3'
 services:
-  phpmyadmin:
-    image: "phpmyadmin/phpmyadmin"
-    container_name: "phpmyadmin"
-    ports:
-      - "88:80"
-    depends_on:
-      - "db"
-    networks: 
-      - dev-network
-  db:
-    image: "mysql:5.6"
-    container_name: "mysql5.6"
-    volumes:
-      - ./test/init.sql:/docker-entrypoint-initdb.d/db_init.sql
-    environment:
-      MYSQL_ROOT_PASSWORD: "root"
-    ports:
-      - "3306:3306"
-    networks: 
-      - dev-network
-
-  mongo: 
+  mongo:
     image: 'mongo'
     container_name: 'mongo_server'
     restart: always
@@ -31,7 +10,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin
-    networks: 
+    networks:
       - dev-network
   manager:
     image: 'yfsoftcom/adminmongo'
@@ -46,8 +25,8 @@ services:
       DB_PORT: 27017
     depends_on:
       - 'mongo'
-    networks: 
+    networks:
       - dev-network
 
 networks:
-  dev-network: 
+  dev-network:

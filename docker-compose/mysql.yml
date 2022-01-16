@@ -1,0 +1,26 @@
+
+version: '3'
+services:
+  adminer:
+    image: adminer
+    ports:
+      - 8081:8080
+    environment:
+      TZ: "Asia/Shanghai"
+    depends_on:
+      - "db"
+    networks:
+      - dev-network
+  mysql:
+    image: "mysql/mysql-server"
+    volumes:
+      - ../test/init.sql:/docker-entrypoint-initdb.d/db_init.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      TZ: "Asia/Shanghai"
+    ports:
+      - "3306:3306"
+    networks:
+      - dev-network
+networks:
+  dev-network:
