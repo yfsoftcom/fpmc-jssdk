@@ -1,7 +1,7 @@
 
 const assert = require('assert');
 const { init, MGObject, InfluxQuery } = require("../lib/index.js");
-init({ appkey: '123123', masterKey: '123123', endpoint: 'http://localhost:9999/api', v: '0.0.1' });
+init({ appkey: '123123', masterKey: '123123', domain: 'http://localhost:9999' });
 
 describe('InfluxQuery', function(){
   // before('', function(done){

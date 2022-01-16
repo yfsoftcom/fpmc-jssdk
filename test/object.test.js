@@ -1,25 +1,25 @@
 const assert = require('assert');
-const { init, DBObject, Object: Obj, ping } = require("../lib/index.js");
-init({ appkey: '123123', masterKey: '123123', endpoint: 'http://localhost:9999/api', v: '0.0.1' });
+const { init, DBObject } = require("../lib/index.js");
+init({ appkey: '123123', masterKey: '123123', domain: 'http://localhost:9091' });
 
 describe('DBObject', function(){
-  before('', function(done){
-    const obj = new DBObject('test');
-    obj.clear()
-      .then(data => {
-        done();
-      })
-      .catch(done)
-  })
+  // beforeAll(function(done){
+  //   const obj = new DBObject('test');
+  //   obj.clear()
+  //     .then(data => {
+  //       done();
+  //     })
+  //     .catch(done)
+  // })
 
-  after('', function(done){
-    const obj = new DBObject('test');
-    obj.clear()
-      .then(data => {
-        done();
-      })
-      .catch(done)
-  })
+  // afterAll(function(done){
+  //   const obj = new DBObject('test');
+  //   obj.clear()
+  //     .then(data => {
+  //       done();
+  //     })
+  //     .catch(done)
+  // })
 
   it('Create function', function(done){
     const obj = new DBObject('test');

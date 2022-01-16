@@ -4,7 +4,7 @@
 import Query from '../Query';
 import DataResult from '../util/DataResult';
 import { send } from '../../util/kit';
-import Constant from '../../Constant';
+import { getOptions } from '../../options';
 import Exception from '../util/Exception';
 import ObjectId from '../util/ObjectId';
 import { IArgument } from '../IArgument';
@@ -135,7 +135,7 @@ abstract class AbsQuery implements Query{
       };
       input[this._fieldOfTable] = this.formatTable();
       this._argument.assignArguments(input);
-      const count = await send( this._functionNames.count, input, Constant.getOptions());
+      const count = await send( this._functionNames.count, input, getOptions());
       return Promise.resolve(count);
     } catch (error) {
       throw error;
@@ -150,7 +150,7 @@ abstract class AbsQuery implements Query{
       };
       input[this._fieldOfTable] = this.formatTable();
       this._argument.assignArguments(input);
-      const data = await send( this._functionNames.first, input, Constant.getOptions());
+      const data = await send( this._functionNames.first, input, getOptions());
       if(data == undefined){
         // nothing found
         throw new Exception({ errno: -3, message: 'nothing found!' })
@@ -179,7 +179,7 @@ abstract class AbsQuery implements Query{
         input['groupBy'] = this._groupBy;
       }
       this._argument.assignArguments(input);
-      const rows = await send( this._functionNames.find, input, Constant.getOptions());
+      const rows = await send( this._functionNames.find, input, getOptions());
       return Promise.resolve(rows);
     } catch (error) {
       throw error;
@@ -197,7 +197,7 @@ abstract class AbsQuery implements Query{
       };
       input[this._fieldOfTable] = this.formatTable();
       this._argument.assignArguments(input);
-      const data = await send( this._functionNames.findAndCount, input, Constant.getOptions());
+      const data = await send( this._functionNames.findAndCount, input, getOptions());
       return Promise.resolve(data);
     } catch (error) {
       throw error;
@@ -209,7 +209,7 @@ abstract class AbsQuery implements Query{
       const input:{[index:string]: any} = {
         query,
       };
-      const rows = await send( this._functionNames.query, input, Constant.getOptions());
+      const rows = await send( this._functionNames.query, input, getOptions());
       return Promise.resolve(rows);
     } catch (error) {
       throw error;

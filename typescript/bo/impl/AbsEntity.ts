@@ -6,7 +6,7 @@ import Condition from '../util/Condition';
 import DataResult from '../util/DataResult';
 import IArgument from '../IArgument';
 import { send } from '../../util/kit';
-import Constant from '../../Constant';
+import { getOptions } from '../../options';
 import Exception from '../util/Exception';
 import ObjectId from '../util/ObjectId';
 
@@ -74,7 +74,7 @@ abstract class AbsEntity implements Entity{
       };
       input[this._fieldOfTable] = this.name;
       this._argument.assignArguments(input);
-      const rsp = await send( this._functionNames.batch, input, Constant.getOptions());
+      const rsp = await send( this._functionNames.batch, input, getOptions());
       const { affectedRows, changedRows, n } = rsp;
       const rowsNumber = ( affectedRows || changedRows || n );
       if( len != rowsNumber )
@@ -103,7 +103,7 @@ abstract class AbsEntity implements Entity{
       input[this._fieldOfTable] = this.name;
 
       this._argument.assignArguments(input);
-      const rsp = await send( this._functionNames.create, input, Constant.getOptions());
+      const rsp = await send( this._functionNames.create, input, getOptions());
       const id = rsp.insertId || rsp.id || rsp._id || rsp.ObjectId || rsp.time;
       if(id == undefined)
         throw new Exception({ message: 'create Error: no inserted Id return ' });
@@ -134,7 +134,7 @@ abstract class AbsEntity implements Entity{
       input[this._fieldOfTable] = this.name;
       this._argument.assignArguments(input);
       // wait to update, and need not feedback data if no error
-      await send( this._functionNames.save, input, Constant.getOptions());
+      await send( this._functionNames.save, input, getOptions());
       this._data = (<any>Object).assign(this._data, row);
 
       return Promise.resolve(new DataResult(this.objectId, this._data));
@@ -153,7 +153,7 @@ abstract class AbsEntity implements Entity{
       };
       input[this._fieldOfTable] = this.name;
       this._argument.assignArguments(input);
-      const data = await send( this._functionNames.first, input, Constant.getOptions());
+      const data = await send( this._functionNames.first, input, getOptions());
       // find nothing;
       if(data == undefined && data == null){
         throw new Exception({ errno: -3, message: 'nothing find' });
@@ -179,7 +179,7 @@ abstract class AbsEntity implements Entity{
       };
       input[this._fieldOfTable] = this.name;
       this._argument.assignArguments(input);
-      const data = await send( this._functionNames.get, input, Constant.getOptions());
+      const data = await send( this._functionNames.get, input, getOptions());
       this.set(data);
       return Promise.resolve(new DataResult(this.objectId, this._data));
     } catch (error) {
@@ -199,7 +199,7 @@ abstract class AbsEntity implements Entity{
       input[this._fieldOfTable] = this.name;
       this._argument.assignArguments(input);
       // wait to remove, and need not feedback data if no error
-      const rsp = await send( this._functionNames.remove, input, Constant.getOptions());
+      const rsp = await send( this._functionNames.remove, input, getOptions());
       const { affectedRows, changedRows, n } = rsp;
       if(affectedRows == 1 || changedRows == 1 || n == 1)
         return Promise.resolve(true);
@@ -218,7 +218,7 @@ abstract class AbsEntity implements Entity{
       };
       input[this._fieldOfTable] = this.name;
       this._argument.assignArguments(input);
-      const rsp = await send( this._functionNames.clear, input, Constant.getOptions());
+      const rsp = await send( this._functionNames.clear, input, getOptions());
       const { affectedRows, changedRows, n } = rsp;
       const rowsNumber = ( affectedRows || changedRows || n );
       return Promise.resolve(rowsNumber);
