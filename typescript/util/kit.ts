@@ -60,7 +60,7 @@ async function send(method: string,
   }
   if (options.accessToken) {
     // use access token to access the api
-    return performRequest(`${options.biz}/${method.replace('.', '/')}`, args, { 'Authorization': `Beraer ${options.accessToken}` });
+    return performRequest(`${options.biz}/${method.replace('.', '/')}`, args, { 'Authorization': `Bearer ${options.accessToken}` });
   }
   const headers: {[index:string]: any} = {};
   if (options.serverKey) {
